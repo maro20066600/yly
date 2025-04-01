@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/gateway.html",
+      "permanent": true
+    }
+  ]
+}

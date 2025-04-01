@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magical Gateway</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Harry Potter style font -->
+    <link href="https://fonts.cdnfonts.com/css/harry-potter" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Harry Potter', 'Cinzel Decorative', cursive;
+            background-color: #000;
+        }
+        
+        .gateway-container {
+            width: 100%;
+            height: 100vh;
+            background-image: url('images/gateway/hogwarts.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Fallback to online image if local image not found */
+        @media (max-width: 1px) {
+            .gateway-container {
+                background-image: url('https://i.imgur.com/UhxZS1Q.jpg');
+            }
+        }
+        
+        .gateway-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+        
+        .gateway-title {
+            font-size: 3.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #1a5fb4;
+            text-shadow: 0 0 10px #3584e4, 0 0 20px #3584e4;
+            z-index: 2;
+            animation: title-float 4s ease-in-out infinite;
+        }
+        
+        @keyframes title-float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0); }
+        }
+        
+        .spells-container {
+            display: flex;
+            gap: 2rem;
+            z-index: 2;
+        }
+        
+        .spell-button {
+            background: none;
+            border: 2px solid #1a5fb4;
+            border-radius: 30px;
+            color: #1a5fb4;
+            font-family: 'Harry Potter', 'Cinzel Decorative', cursive;
+            font-size: 1.8rem;
+            padding: 1rem 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            text-shadow: 0 0 5px #3584e4;
+            box-shadow: 0 0 10px rgba(53, 132, 228, 0.5);
+        }
+        
+        .spell-button:hover {
+            background-color: rgba(53, 132, 228, 0.1);
+            box-shadow: 0 0 20px rgba(53, 132, 228, 0.8), 0 0 40px rgba(53, 132, 228, 0.4);
+            transform: scale(1.05);
+        }
+        
+        .spell-button::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 2px solid rgba(53, 132, 228, 0.3);
+            border-radius: 35px;
+            animation: pulse 2s infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.05); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 0.7; }
+        }
+        
+        .error-message {
+            color: #ff4500;
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            text-shadow: 0 0 10px #ff4500;
+            z-index: 2;
+        }
+        
+        .door-effect {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background-color: #000;
+            z-index: 3;
+            transition: transform 2s ease-in-out;
+        }
+        
+        .door-left {
+            left: 0;
+            transform: translateX(-100%);
+        }
+        
+        .door-right {
+            right: 0;
+            transform: translateX(100%);
+        }
+        
+        .opening .door-left {
+            transform: translateX(0);
+        }
+        
+        .opening .door-right {
+            transform: translateX(0);
+        }
+        
+        .light-effect {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(53, 132, 228, 0.7) 0%, rgba(53, 132, 228, 0) 70%);
+            z-index: 2;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .magic-cursor {
+            position: fixed;
+            width: 70px;
+            height: 10px;
+            background: linear-gradient(90deg, #1a5fb4 60%, #0d3164 100%);
+            border-radius: 5px;
+            transform-origin: 20% 50%;
+            z-index: 10000;
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-80%, -20%);
+        }
+        
+        .magic-cursor::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            right: 0;
+            width: 15px;
+            height: 14px;
+            background: radial-gradient(circle, #fff 10%, #add8e6 30%, #3584e4 70%);
+            border-radius: 50%;
+            box-shadow: 
+                0 0 10px #3584e4,
+                0 0 20px rgba(53, 132, 228, 0.7),
+                0 0 30px rgba(53, 132, 228, 0.5);
+            animation: pulsate 1.5s infinite alternate;
+        }
+        
+        @keyframes pulsate {
+            0% { transform: scale(1); opacity: 0.9; }
+            100% { transform: scale(1.2); opacity: 1; }
+        }
+        
+        .sparkles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+            overflow: hidden;
+        }
+        
+        .magic-sparkle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            background-color: #3584e4;
+            box-shadow: 0 0 8px #3584e4;
+            z-index: 9999;
+            transition: opacity 0.2s ease;
+            transform: translate(-50%, -50%);
+        }
+        
+        body {
+            cursor: none;
+        }
+        
+        /* Shake animation for wrong spell */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+        
+        .shake {
+            animation: shake 0.5s;
+        }
+        
+        /* Explosion effect */
+        .explosion-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9997;
+            display: none;
+        }
+        
+        .explosion {
+            position: absolute;
+            background: radial-gradient(circle, rgba(255, 69, 0, 0.9) 0%, rgba(255, 165, 0, 0.8) 25%, rgba(255, 69, 0, 0.1) 70%, rgba(255, 69, 0, 0) 100%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            z-index: 9997;
+            animation: explode 1s forwards;
+        }
+        
+        .explosion-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+        
+        .explosion-particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: #ff4500;
+            border-radius: 50%;
+            opacity: 1;
+            z-index: 9996;
+        }
+        
+        @keyframes explode {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(15);
+                opacity: 0;
+            }
+        }
+        
+        /* Blue character guide */
+        .blue-wizard {
+            position: fixed;
+            bottom: 10px;
+            right: 30px;
+            width: 180px;
+            height: 280px;
+            background-image: url('images/characters/blue-wizard.png');
+            background-size: contain;
+            background-position: center bottom;
+            background-repeat: no-repeat;
+            z-index: 10;
+            animation: float-up 1s ease-out forwards 1s;
+        }
+        
+        .speech-bubble {
+            position: absolute;
+            top: -80px;
+            left: -150px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #1a5fb4;
+            font-family: 'Harry Potter', 'Cinzel Decorative', cursive;
+            padding: 15px;
+            border-radius: 20px;
+            width: 220px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: show-bubble 0.5s ease-out forwards 2s;
+        }
+        
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 20px;
+            width: 0;
+            height: 0;
+            border: 15px solid transparent;
+            border-top-color: rgba(255, 255, 255, 0.9);
+            border-bottom: 0;
+            margin-bottom: -15px;
+        }
+        
+        @keyframes float-up {
+            0% {
+                transform: translateY(0);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(-50px);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes show-bubble {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 600px) {
+            .gateway-title {
+                font-size: 2.5rem; /* Reduce title size */
+            }
+
+            .spells-container {
+                flex-direction: column; /* Stack buttons vertically */
+                gap: 1rem;
+            }
+
+            .spell-button {
+                font-size: 1.5rem; /* Reduce button font size */
+                padding: 0.8rem 1.5rem;
+                width: 80%; /* Make buttons wider */
+                max-width: 300px;
+                margin: 0 auto; /* Center buttons */
+            }
+
+            .blue-wizard {
+                width: 120px; /* Reduce wizard size */
+                height: 190px;
+                right: 10px; /* Move closer to edge */
+                bottom: 5px;
+                animation: float-up 1s ease-out forwards 0.5s; /* Delay appearance */
+            }
+
+            .speech-bubble {
+                width: 180px; /* Reduce bubble size */
+                top: -70px;
+                left: -130px;
+                font-size: 0.9rem; /* Reduce bubble font size */
+                padding: 10px;
+                animation: show-bubble 0.5s ease-out forwards 1s; /* Shorter delay for appearance */
+            }
+
+            .speech-bubble:after {
+                right: 15px;
+            }
+            
+            /* Adjust the magic wand cursor for small screens if needed */
+            .magic-cursor {
+                 display: none; /* Hide wand cursor on mobile for better touch experience */
+            }
+            body {
+                cursor: default; /* Return to default cursor for mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="magic-cursor"></div>
+    <div class="sparkles-container"></div>
+    <div class="explosion-container" id="explosionContainer"></div>
+    
+    <div class="gateway-container">
+        <div class="gateway-overlay"></div>
+        <div class="light-effect"></div>
+        
+        <h1 class="gateway-title">Choose the Correct Spell to Enter</h1>
+        
+        <div class="spells-container">
+            <button class="spell-button" id="spellAlohomora">Alohomora</button>
+            <button class="spell-button" id="spellBombarda">Bombarda</button>
+        </div>
+        
+        <div class="error-message" id="errorMessage">Wrong spell! Try again...</div>
+        
+        <!-- Door opening effect -->
+        <div class="door-effect door-left"></div>
+        <div class="door-effect door-right"></div>
+    </div>
+
+    <audio id="correctSpellSound" src="audio/Hermione - Alohomora [0CEOotN4Px4].mp3"></audio>
+    <audio id="wrongSpellSound" src="audio/spell-sound-3.mp3"></audio>
+    <audio id="backgroundSound" src="audio/the-mischievous-wizard-311524.mp3" loop></audio>
+    
+    <div class="blue-wizard">
+        <div class="speech-bubble">
+            <p>Hi! Choose the right spell to enter Hogwarts!</p>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Magic wand cursor effect
+            const magicCursor = document.querySelector('.magic-cursor');
+            const sparklesContainer = document.querySelector('.sparkles-container');
+            
+            // Create sparkles
+            for (let i = 0; i < 20; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'magic-sparkle';
+                sparkle.style.width = `${Math.random() * 8 + 3}px`;
+                sparkle.style.height = sparkle.style.width;
+                sparklesContainer.appendChild(sparkle);
+            }
+            
+            const sparkles = document.querySelectorAll('.magic-sparkle');
+            
+            // Track mouse movement
+            let mouseX = 0, mouseY = 0;
+            let prevMouseX = 0, prevMouseY = 0;
+            
+            document.addEventListener('mousemove', e => {
+                prevMouseX = mouseX;
+                prevMouseY = mouseY;
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                
+                // Update wand position and rotation
+                const dx = mouseX - prevMouseX;
+                const dy = mouseY - prevMouseY;
+                const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                
+                magicCursor.style.left = `${mouseX}px`;
+                magicCursor.style.top = `${mouseY}px`;
+                magicCursor.style.transform = `translate(-80%, -20%) rotate(${angle}deg)`;
+                magicCursor.style.opacity = '1';
+                
+                // Create sparkle effect on movement
+                if (Math.abs(dx) > 2 || Math.abs(dy) > 2) {
+                    createSparkleTrail(mouseX, mouseY, angle);
+                }
+            });
+            
+            // Create sparkle trail following the wand
+            function createSparkleTrail(x, y, angle) {
+                sparkles.forEach((sparkle, index) => {
+                    if (sparkle.dataset.active !== 'true') {
+                        // Position at the wand tip
+                        const wandTipX = x - Math.cos((angle + 20) * Math.PI / 180) * 30;
+                        const wandTipY = y - Math.sin((angle + 20) * Math.PI / 180) * 30;
+                        
+                        // Random offset from wand tip
+                        const offsetX = (Math.random() - 0.5) * 30;
+                        const offsetY = (Math.random() - 0.5) * 30;
+                        
+                        sparkle.style.left = `${wandTipX + offsetX}px`;
+                        sparkle.style.top = `${wandTipY + offsetY}px`;
+                        sparkle.style.opacity = '1';
+                        sparkle.dataset.active = 'true';
+                        
+                        // Random blue shades
+                        const colors = ['#3584e4', '#1c71d8', '#62a0ea', '#99c1f1'];
+                        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                        sparkle.style.backgroundColor = randomColor;
+                        sparkle.style.boxShadow = `0 0 8px ${randomColor}`;
+                        
+                        // Fade out effect
+                        setTimeout(() => {
+                            sparkle.style.opacity = '0';
+                            sparkle.dataset.active = 'false';
+                        }, Math.random() * 800 + 200);
+                        
+                        return;
+                    }
+                });
+            }
+            
+            // Spell buttons logic
+            const correctSpellButton = document.getElementById('spellAlohomora');
+            const wrongSpellButton = document.getElementById('spellBombarda');
+            const errorMessage = document.getElementById('errorMessage');
+            const lightEffect = document.querySelector('.light-effect');
+            const gateways = document.querySelector('.gateway-container');
+            const doorLeft = document.querySelector('.door-left');
+            const doorRight = document.querySelector('.door-right');
+            
+            const correctSound = document.getElementById('correctSpellSound');
+            const wrongSound = document.getElementById('wrongSpellSound');
+            const backgroundSound = document.getElementById('backgroundSound');
+            
+            // Play background sound with user interaction
+            document.addEventListener('click', function playBgMusic() {
+                backgroundSound.play().catch(e => console.log('Audio play was prevented'));
+                document.removeEventListener('click', playBgMusic);
+            }, { once: true });
+            
+            // Correct spell (Alohomora)
+            correctSpellButton.addEventListener('click', () => {
+                // Play correct spell sound
+                correctSound.play().catch(e => console.log('Audio play was prevented'));
+                
+                // Change blue wizard message
+                const speechBubble = document.querySelector('.speech-bubble p');
+                speechBubble.textContent = "Well done! Welcome to Hogwarts!";
+                
+                // Light effect
+                lightEffect.style.opacity = '1';
+                setTimeout(() => {
+                    lightEffect.style.opacity = '0';
+                }, 1500);
+                
+                // Close the doors
+                gateways.classList.add('opening');
+                
+                // Redirect to main page after effect
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+            });
+            
+            // Wrong spell (Bombarda)
+            wrongSpellButton.addEventListener('click', () => {
+                // Play wrong spell sound
+                wrongSound.play().catch(e => console.log('Audio play was prevented'));
+                
+                // Show error message
+                errorMessage.style.opacity = '1';
+                
+                // Change blue wizard message
+                const speechBubble = document.querySelector('.speech-bubble p');
+                speechBubble.textContent = "Oh no! That's the wrong spell. Try Alohomora!";
+                
+                // Shake effect
+                gateways.classList.add('shake');
+                
+                // Create explosion effect at button position
+                createExplosion(wrongSpellButton);
+                
+                // Hide error after 2 seconds
+                setTimeout(() => {
+                    errorMessage.style.opacity = '0';
+                }, 2000);
+                
+                // Remove shake class after animation completes
+                setTimeout(() => {
+                    gateways.classList.remove('shake');
+                }, 500);
+            });
+        });
+
+        // Create explosion effect
+        function createExplosion(target) {
+            const explosionContainer = document.getElementById('explosionContainer');
+            explosionContainer.innerHTML = ''; // Clear previous explosions
+            explosionContainer.style.display = 'block';
+            
+            // Get position for explosion center (near the button)
+            const rect = target.getBoundingClientRect();
+            const explosionX = rect.left + rect.width / 2;
+            const explosionY = rect.top + rect.height / 2;
+            
+            // Create main explosion
+            const explosion = document.createElement('div');
+            explosion.className = 'explosion';
+            explosion.style.left = `${explosionX}px`;
+            explosion.style.top = `${explosionY}px`;
+            explosionContainer.appendChild(explosion);
+            
+            // Create explosion particles container
+            const particlesContainer = document.createElement('div');
+            particlesContainer.className = 'explosion-particles';
+            explosionContainer.appendChild(particlesContainer);
+            
+            // Create flying particles
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'explosion-particle';
+                
+                // Random position offset from explosion center
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 20 + Math.random() * 80;
+                const particleX = explosionX + Math.cos(angle) * distance;
+                const particleY = explosionY + Math.sin(angle) * distance;
+                
+                // Random size
+                const size = 3 + Math.random() * 6;
+                
+                // Random colors (fire colors)
+                const colors = ['#ff4500', '#ff6600', '#ff7f00', '#ff8c00', '#ffa500'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Set particle styles
+                particle.style.left = `${particleX}px`;
+                particle.style.top = `${particleY}px`;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.backgroundColor = color;
+                
+                // Set random animation
+                const duration = 0.5 + Math.random() * 0.5;
+                const delay = Math.random() * 0.2;
+                const destX = particleX + (Math.random() - 0.5) * 200;
+                const destY = particleY + (Math.random() - 0.5) * 200;
+                
+                particle.style.transition = `all ${duration}s ease-out ${delay}s`;
+                
+                // Add to container
+                particlesContainer.appendChild(particle);
+                
+                // Start animation on next frame
+                setTimeout(() => {
+                    particle.style.transform = `translate(${destX - particleX}px, ${destY - particleY}px)`;
+                    particle.style.opacity = '0';
+                }, 10);
+            }
+            
+            // Remove explosion after animation
+            setTimeout(() => {
+                explosionContainer.style.display = 'none';
+            }, 1500);
+        }
+    </script>
+</body>
+</html> 
