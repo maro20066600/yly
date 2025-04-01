@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Now - YLY Competition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cinzel Decorative', cursive;
+            background-color: #0a0c1c;
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://wallpapercave.com/wp/wp2763910.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+            z-index: -2;
+        }
+        
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle 4s infinite ease-in-out;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        
+        .contact-container {
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .contact-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #e8d7b0;
+            text-shadow: 0 0 10px rgba(232, 215, 176, 0.6);
+            font-size: 2.8rem;
+            padding-top: 1rem;
+        }
+        
+        .contact-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: rgba(20, 22, 44, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(232, 215, 176, 0.3);
+            border: 1px solid rgba(232, 215, 176, 0.2);
+            color: #fff;
+            line-height: 1.7;
+        }
+        
+        .contact-intro {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .contact-intro p {
+            font-family: Arial, sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .highlight {
+            color: #FE8F01;
+            font-weight: bold;
+        }
+        
+        .form-container {
+            position: relative;
+            padding: 1rem;
+            background: rgba(30, 33, 58, 0.5);
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+        
+        .google-form {
+            width: 100%;
+            height: 650px;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+        }
+        
+        .form-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(20, 22, 44, 0.1);
+            pointer-events: none;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(232, 215, 176, 0.2) inset;
+        }
+        
+        .magic-wand {
+            position: absolute;
+            top: -30px;
+            right: -20px;
+            width: 100px;
+            height: 20px;
+            background: linear-gradient(to right, #8a5a44 0%, #6b3f2e 100%);
+            border-radius: 5px;
+            transform: rotate(-30deg);
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(232, 215, 176, 0.6);
+        }
+        
+        .magic-wand::before {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 0;
+            width: 30px;
+            height: 20px;
+            background: linear-gradient(to right, #e8d7b0, #ffde7a);
+            border-radius: 0 10px 10px 0;
+            box-shadow: 0 0 20px #ffde7a, 0 0 40px #ffde7a;
+        }
+        
+        .magic-wand::after {
+            content: '';
+            position: absolute;
+            right: -12px;
+            top: 5px;
+            width: 6px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 15px white, 0 0 30px white;
+            opacity: 0.8;
+            animation: wandGlow 1s infinite alternate;
+        }
+        
+        @keyframes wandGlow {
+            from { box-shadow: 0 0 15px white, 0 0 30px white; opacity: 0.7; }
+            to { box-shadow: 0 0 25px white, 0 0 45px white; opacity: 0.9; }
+        }
+        
+        .floating-sparkles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .sparkle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: #ffde7a;
+            border-radius: 50%;
+            animation: float 5s ease-in-out infinite, sparkle 2s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-20px) translateX(10px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+        
+        @keyframes sparkle {
+            0% { opacity: 0.2; box-shadow: 0 0 5px #ffde7a; }
+            50% { opacity: 1; box-shadow: 0 0 15px #ffde7a, 0 0 20px #ffde7a; }
+            100% { opacity: 0.2; box-shadow: 0 0 5px #ffde7a; }
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            gap: 1.5rem;
+        }
+        
+        .nav-button {
+            background: #1e213a;
+            color: #e8d7b0;
+            border: 2px solid #e8d7b0;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 30px;
+            font-family: 'Cinzel Decorative', cursive;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(232, 215, 176, 0.3);
+        }
+        
+        .nav-button:hover {
+            background: #282d4f;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(232, 215, 176, 0.5);
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .contact-title {
+                font-size: 2.2rem;
+            }
+            
+            .contact-intro p {
+                font-size: 1rem;
+            }
+            
+            .google-form {
+                height: 700px;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            
+            .nav-button {
+                width: 80%;
+                font-size: 1rem;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .contact-title {
+                font-size: 1.8rem;
+            }
+            
+            .contact-content {
+                padding: 1.5rem;
+            }
+            
+            .contact-intro p {
+                font-size: 0.9rem;
+            }
+            
+            .google-form {
+                height: 750px;
+            }
+            
+            .nav-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="background-overlay"></div>
+    
+    <div class="contact-container">
+        <h1 class="contact-title">Join YLY Competition</h1>
+        
+        <div class="contact-content">
+            <div class="contact-intro">
+                <p>Welcome, aspiring wizards! Fill out this magical form to join our enchanted competition and begin your magical journey.</p>
+                <p>Your adventure with <span class="highlight">YLY Competition</span> begins here!</p>
+            </div>
+            
+            <div class="form-container">
+                <div class="magic-wand"></div>
+                <div class="floating-sparkles" id="sparkles"></div>
+                
+                <!-- ضع رابط جوجل فورم الخاص بك هنا -->
+                <iframe class="google-form" src="https://docs.google.com/forms/d/e/1FAIpQLSeYuzTQrMNf0LuNXaHWh2BVupxhWSsvlrkOUVmmtKUFTJ1qkA/viewform?embedded=true" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+                
+                <div class="form-overlay"></div>
+            </div>
+            
+            <div class="nav-buttons">
+                <a href="coming-soon.html" class="nav-button">Back to Main Page</a>
+                <a href="about.html" class="nav-button">About Us</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Create stars
+        function createStars() {
+            const stars = document.getElementById('stars');
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+            const starCount = Math.floor(screenWidth * screenHeight / 1000);
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // Random position
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                
+                // Random size
+                const size = Math.random() * 3 + 1;
+                
+                // Random delay for twinkling
+                const delay = Math.random() * 4;
+                
+                star.style.left = `${left}%`;
+                star.style.top = `${top}%`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.animationDelay = `${delay}s`;
+                
+                stars.appendChild(star);
+            }
+        }
+        
+        // Create floating sparkles
+        function createSparkles() {
+            const sparklesContainer = document.getElementById('sparkles');
+            const sparkleCount = 15;
+            
+            for (let i = 0; i < sparkleCount; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                
+                // Random position
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                
+                // Random size
+                const size = Math.random() * 5 + 3;
+                
+                // Random animation delay
+                const delay = Math.random() * 5;
+                const floatDelay = Math.random() * 5;
+                
+                sparkle.style.left = `${left}%`;
+                sparkle.style.top = `${top}%`;
+                sparkle.style.width = `${size}px`;
+                sparkle.style.height = `${size}px`;
+                sparkle.style.animationDelay = `${delay}s, ${floatDelay}s`;
+                
+                sparklesContainer.appendChild(sparkle);
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            createSparkles();
+        });
+    </script>
+</body>
+</html> 
