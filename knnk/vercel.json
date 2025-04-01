@@ -1,0 +1,40 @@
+{
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/coming-soon.html",
+      "permanent": true
+    },
+    {
+      "source": "/index",
+      "destination": "/coming-soon.html",
+      "permanent": true
+    },
+    {
+      "source": "/index.html",
+      "destination": "/coming-soon.html",
+      "permanent": true
+    },
+    {
+      "source": "/gateway.html",
+      "destination": "/coming-soon.html",
+      "permanent": true
+    },
+    {
+      "source": "/main.html",
+      "destination": "/coming-soon.html",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/((?!coming-soon.html|about.html|styles.css|script.js|images/|audio/).*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    }
+  ]
+}
