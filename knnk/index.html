@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YLY Competition - Magical Lottery</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* تعليمات لاستخدام صورة محلية */
+        .use-local-bg .landing-container {
+            background-image: url('./images/hogwarts.jpg');
+        }
+        
+        /* إذا لم تكن الصورة المحلية متوفرة، استخدم الصورة عبر الإنترنت */
+        @media (max-width: 1px) {
+            .use-local-bg .landing-container {
+                background-image: url('https://i.imgur.com/tYcNGsw.jpg');
+            }
+        }
+        
+        /* تحريك العنوان للأعلى والأسفل */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating-title {
+            animation: float 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="use-local-bg">
+    <div id="player"></div>
+    <div class="landing-container">
+        <div class="owl-container">
+            <div class="owl">
+                <div class="message-banner">Welcome Our Magicians</div>
+            </div>
+        </div>
+        <div class="landing-content-floating">
+            <h1 class="main-title floating-title">YLY Competition</h1>
+            <div class="button-group">
+                <button id="startButton" class="magic-button">START MAGIC</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lottery Page (Hidden Initially) -->
+    <div class="lottery-container" style="display: none;">
+        <h1 class="lottery-title">The Magical YLY Lottery</h1>
+        
+        <!-- Group Selection -->
+        <div class="group-selection">
+            <h2>Hogwarts Magical Houses</h2>
+            
+            <div class="view-results-container">
+                <button id="viewAllResultsButton" class="magic-button view-results-btn">VIEW ALL RESULTS</button>
+            </div>
+            
+            <!-- Gryffindor House -->
+            <div class="groups-section">
+                <h3>Gryffindor House</h3>
+                <div class="groups-grid">
+                    <div class="group-card" data-group="tiktok">
+                        <div class="wizard-hat"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="card-content">
+                            <h3>TikTok</h3>
+                            <div class="card-icon">📱</div>
+                            <p class="group-description">Courage in Social Media</p>
+                        </div>
+                    </div>
+                    <div class="group-card" data-group="contentcreator">
+                        <div class="wizard-hat"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="card-content">
+                            <h3>Content Creator</h3>
+                            <div class="card-icon">🎥</div>
+                            <p class="group-description">Bold Creative Vision</p>
+                        </div>
+                    </div>
+                    <div class="group-card" data-group="vlog">
+                        <div class="wizard-hat"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="card-content">
+                            <h3>Vlog</h3>
+                            <div class="card-icon">🎬</div>
+                            <p class="group-description">Adventures in Daily Life</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hufflepuff House -->
+            <div class="groups-section">
+                <h3>Hufflepuff House</h3>
+                <div class="groups-grid">
+                    <div class="group-card" data-group="topchef">
+                        <div class="wizard-hat"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="card-content">
+                            <h3>Top Chef</h3>
+                            <div class="card-icon">👨‍🍳</div>
+                            <p class="group-description">Dedication to Culinary Arts</p>
+                        </div>
+                    </div>
+                    <div class="group-card" data-group="karaoke">
+                        <div class="wizard-hat"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="card-content">
+                            <h3>Karaoke</h3>
+                            <div class="card-icon">🎤</div>
+                            <p class="group-description">Joy of Music & Harmony</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ravenclaw House -->
+            <div class="groups-section">
+                <h3>Ravenclaw House</h3>
+                <div class="groups-grid">
+                    <div class="group-card" data-group="minipodcast">
+                        <div class="wizard-hat"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="card-content">
+                            <h3>Mini Podcast</h3>
+                            <div class="card-icon">🎙️</div>
+                            <p class="group-description">Wisdom in Words</p>
+                        </div>
+                    </div>
+                    <div class="group-card" data-group="design">
+                        <div class="wizard-hat"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="card-content">
+                            <h3>Design</h3>
+                            <div class="card-icon">🎨</div>
+                            <p class="group-description">Creative Intelligence</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slytherin House -->
+            <div class="groups-section">
+                <h3>Slytherin House</h3>
+                <div class="groups-grid">
+                    <div class="group-card" data-group="advertisements">
+                        <div class="wizard-hat"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="card-content">
+                            <h3>Advertisements</h3>
+                            <div class="card-icon">📺</div>
+                            <p class="group-description">Strategic Marketing</p>
+                        </div>
+                    </div>
+                    <div class="group-card" data-group="minimovie">
+                        <div class="wizard-hat"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="card-content">
+                            <h3>Mini Movie</h3>
+                            <div class="card-icon">🎭</div>
+                            <p class="group-description">Ambitious Storytelling</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Draw Area (Hidden until group selection) -->
+        <div class="card-draw-area" style="display: none;">
+            <h2 id="drawTitle">Drawing <span id="currentGroup"></span> Cards</h2>
+            
+            <div class="cards-container">
+                <!-- Cards will be added here dynamically -->
+            </div>
+            
+            <div class="draw-controls">
+                <button id="drawButton" class="magic-button">Start the Magic Lottery</button>
+                <button id="redrawButton" class="magic-button" style="display: none;">Redraw</button>
+                <button id="printButton" class="magic-button" style="display: none;">Print Results</button>
+                <button id="backButton" class="magic-button">Back to Groups</button>
+            </div>
+            
+            <div class="results-scroll" style="display: none;">
+                <div class="wand-left"></div>
+                <h3>Selected Participants</h3>
+                <div id="resultsContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // إضافة مشغل الصوت بدون واجهة رفع الملفات
+        var audioPlayer = document.createElement('audio');
+        audioPlayer.id = 'audioPlayer';
+        audioPlayer.loop = true;
+        audioPlayer.autoplay = true;
+        audioPlayer.src = 'audio/school-of-magic-inspired-by-harry-potter-289617.mp3';
+        
+        // إضافة مشغل الصوت بشكل غير مرئي
+        document.body.appendChild(audioPlayer);
+        
+        // تشغيل الصوت الأساسي تلقائياً عند تحميل الصفحة بعد تفاعل المستخدم
+        document.addEventListener('click', function playAudio() {
+            if (audioPlayer) {
+                audioPlayer.play().catch(function(error) {
+                    console.error('فشل التشغيل التلقائي:', error);
+                });
+                // إزالة المستمع بعد التنفيذ
+                document.removeEventListener('click', playAudio);
+            }
+        });
+        
+        // تغيير الموسيقى عند الضغط على زر البدء
+        document.getElementById('startButton').addEventListener('click', function() {
+            // تغيير الموسيقى عند الانتقال لصفحة الاختيار
+            audioPlayer.src = 'audio/the-mischievous-wizard-311524.mp3';
+            audioPlayer.play().catch(function(error) {
+                console.error('فشل تغيير الموسيقى:', error);
+            });
+        });
+    </script>
+</body>
+</html> 

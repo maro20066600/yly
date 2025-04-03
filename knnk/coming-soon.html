@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon - YLY Competition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cinzel Decorative', cursive;
+            background-color: #0a0c1c;
+            color: #fff;
+            overflow-x: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://wallpapercave.com/wp/wp2763910.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+            z-index: -2;
+        }
+        
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle 4s infinite ease-in-out;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        
+        .content {
+            text-align: center;
+            padding: 2rem;
+            z-index: 1;
+            max-width: 1200px;
+            width: 100%;
+        }
+        
+        .title {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            color: #e8d7b0;
+            text-shadow: 
+                0 0 10px rgba(232, 215, 176, 0.8),
+                0 0 20px rgba(232, 215, 176, 0.6),
+                0 0 30px rgba(232, 215, 176, 0.4),
+                0 0 40px rgba(232, 215, 176, 0.3);
+            animation: glow 1.5s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(232, 215, 176, 0.8), 0 0 20px rgba(232, 215, 176, 0.6), 0 0 30px rgba(232, 215, 176, 0.4); }
+            to { text-shadow: 0 0 15px rgba(232, 215, 176, 0.9), 0 0 25px rgba(232, 215, 176, 0.7), 0 0 35px rgba(232, 215, 176, 0.5), 0 0 45px rgba(232, 215, 176, 0.4); }
+        }
+        
+        .subtitle {
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            color: #FE8F01;
+            text-shadow: 0 0 10px rgba(254, 143, 1, 0.6);
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .countdown-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #e8d7b0;
+            text-shadow: 0 0 8px rgba(232, 215, 176, 0.6);
+            background: rgba(30, 33, 58, 0.7);
+            border: 2px solid rgba(232, 215, 176, 0.3);
+            border-radius: 10px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .countdown-label {
+            font-size: 1rem;
+            color: #FE8F01;
+        }
+        
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            margin-bottom: 3rem;
+        }
+        
+        .slideshow {
+            display: flex;
+            position: absolute;
+            left: 0;
+            animation: slideAnimation 40s linear infinite;
+            height: 100%;
+        }
+        
+        .slideshow:hover {
+            animation-play-state: paused;
+        }
+        
+        @keyframes slideAnimation {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        .slide {
+            flex: 0 0 auto;
+            min-width: 350px;
+            height: 100%;
+            margin-right: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 0 15px rgba(232, 215, 176, 0.4);
+            border: 1px solid rgba(232, 215, 176, 0.3);
+        }
+        
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .slide:hover img {
+            transform: scale(1.1);
+        }
+        
+        .slide::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30%;
+            background: linear-gradient(transparent, rgba(10, 12, 28, 0.8));
+        }
+        
+        .slide-caption {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #e8d7b0;
+            font-size: 1.1rem;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+            padding: 0 10px;
+        }
+        
+        .email-form {
+            background: rgba(30, 33, 58, 0.7);
+            border: 2px solid rgba(232, 215, 176, 0.3);
+            border-radius: 10px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .form-title {
+            margin-bottom: 1rem;
+            color: #e8d7b0;
+            font-size: 1.5rem;
+            text-shadow: 0 0 5px rgba(232, 215, 176, 0.5);
+        }
+        
+        .email-input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 30px;
+            border: 2px solid #e8d7b0;
+            background: rgba(20, 22, 44, 0.8);
+            color: #fff;
+            margin-bottom: 1rem;
+            font-family: Arial, sans-serif;
+            outline: none;
+            text-align: center;
+        }
+        
+        .email-input:focus {
+            box-shadow: 0 0 10px rgba(232, 215, 176, 0.5);
+        }
+        
+        .submit-btn {
+            background: #1e213a;
+            color: #e8d7b0;
+            border: 2px solid #e8d7b0;
+            padding: 12px 25px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 30px;
+            font-family: 'Cinzel Decorative', cursive;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-btn:hover {
+            background: #282d4f;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(232, 215, 176, 0.6);
+        }
+        
+        .submit-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(232, 215, 176, 0.4), transparent);
+            transition: 0.5s;
+        }
+        
+        .submit-btn:hover:before {
+            left: 100%;
+        }
+        
+        .footer {
+            margin-top: 3rem;
+            text-align: center;
+            font-size: 1rem;
+            color: rgba(232, 215, 176, 0.7);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .social-link {
+            color: #e8d7b0;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-link:hover {
+            color: #FE8F01;
+            transform: scale(1.2);
+        }
+        
+        /* Navigation buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .nav-button {
+            background: #1e213a;
+            color: #e8d7b0;
+            border: 2px solid #e8d7b0;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border-radius: 30px;
+            font-family: 'Cinzel Decorative', cursive;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(232, 215, 176, 0.3);
+        }
+        
+        .nav-button:hover {
+            background: #282d4f;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(232, 215, 176, 0.5);
+        }
+        
+        /* Blue wizard character */
+        .blue-wizard {
+            position: absolute;
+            bottom: 20px;
+            left: 40px;
+            z-index: 10;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .blue-wizard img {
+            height: 250px;
+            width: auto;
+        }
+        
+        .speech-bubble {
+            position: absolute;
+            top: 30px;
+            right: -220px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 15px;
+            border-radius: 20px;
+            max-width: 250px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            width: 0;
+            height: 0;
+            border: 15px solid transparent;
+            border-right-color: rgba(255, 255, 255, 0.9);
+            border-left: 0;
+            margin-top: -15px;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 3rem;
+            }
+            
+            .subtitle {
+                font-size: 1.5rem;
+                margin-bottom: 2rem;
+            }
+            
+            .countdown {
+                gap: 1rem;
+            }
+            
+            .countdown-number {
+                font-size: 2rem;
+                width: 70px;
+                height: 70px;
+            }
+            
+            .countdown-label {
+                font-size: 0.8rem;
+            }
+            
+            .slideshow-container {
+                height: 250px;
+            }
+            
+            .slide {
+                min-width: 280px;
+            }
+            
+            .slide-caption {
+                font-size: 0.9rem;
+            }
+            
+            .blue-wizard {
+                bottom: 10px;
+                left: 10px;
+            }
+            
+            .blue-wizard img {
+                height: 150px;
+            }
+            
+            .speech-bubble {
+                top: 10px;
+                right: -150px;
+                max-width: 150px;
+                padding: 8px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .countdown {
+                flex-wrap: wrap;
+                gap: 1rem 0.5rem;
+            }
+            
+            .countdown-number {
+                font-size: 1.5rem;
+                width: 60px;
+                height: 60px;
+            }
+            
+            .slideshow-container {
+                height: 200px;
+            }
+            
+            .slide {
+                min-width: 220px;
+            }
+            
+            .email-form {
+                padding: 1.5rem;
+            }
+            
+            .blue-wizard {
+                position: relative;
+                left: auto;
+                bottom: auto;
+                width: 100%;
+                margin-bottom: 20px;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .blue-wizard img {
+                height: 100px;
+                width: auto;
+            }
+            
+            .speech-bubble {
+                position: relative;
+                top: 10px;
+                left: 0;
+                right: 0;
+                max-width: 80%;
+                font-size: 0.8rem;
+                margin: 0 auto;
+            }
+            
+            .speech-bubble:after {
+                left: 50%;
+                top: -15px;
+                border: 15px solid transparent;
+                border-bottom-color: rgba(255, 255, 255, 0.9);
+                border-top: 0;
+                margin-left: -15px;
+                margin-top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-overlay"></div>
+    <div class="stars" id="stars"></div>
+    <div class="twinkling"></div>
+    <div class="clouds"></div>
+    
+    <div class="blue-wizard">
+        <img src="images/characters/blue-wizard.png" alt="Blue Wizard">
+        <div class="speech-bubble">
+            <p>Welcome wizard! Our magical competition will start soon in 2025!</p>
+        </div>
+    </div>
+    
+    <div class="content">
+        <h1 class="title">YLY Competition 2025</h1>
+        <h2 class="subtitle">Coming Soon</h2>
+        
+        <div class="countdown">
+            <div class="countdown-item">
+                <div class="countdown-number" id="days">00</div>
+                <div class="countdown-label">Days</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="hours">00</div>
+                <div class="countdown-label">Hours</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="minutes">00</div>
+                <div class="countdown-label">Minutes</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-number" id="seconds">00</div>
+                <div class="countdown-label">Seconds</div>
+            </div>
+        </div>
+        
+        <div class="slideshow-container">
+            <div class="slideshow" id="slideshow">
+                <!-- Original slides -->
+                <div class="slide">
+                    <img src="images/gallery/yly-event1.jpg" alt="YLY Event">
+                    <div class="slide-caption">Youth Leadership Workshop</div>
+                </div>
+                <div class="slide">
+                    <img src="images/gallery/yly-event2.jpg" alt="YLY Event">
+                    <div class="slide-caption">Team Building Activities</div>
+                </div>
+                <div class="slide">
+                    <img src="images/gallery/yly-event3.jpg" alt="YLY Event">
+                    <div class="slide-caption">Awards Ceremony</div>
+                </div>
+                <div class="slide">
+                    <img src="images/gallery/yly-event4.jpg" alt="YLY Event">
+                    <div class="slide-caption">Cultural Challenge</div>
+                </div>
+                <div class="slide">
+                    <img src="images/gallery/yly-event5.jpg" alt="YLY Event">
+                    <div class="slide-caption">Sports Competition</div>
+                </div>
+                <div class="slide">
+                    <img src="images/gallery/yly-event6.jpg" alt="YLY Event">
+                    <div class="slide-caption">Creative Arts Workshop</div>
+                </div>
+                
+                <!-- Duplicate slides for seamless looping -->
+                <div class="slide">
+                    <img src="images/gallery/yly-event1.jpg" alt="YLY Event">
+                    <div class="slide-caption">Youth Leadership Workshop</div>
+                </div>
+                <div class="slide">
+                    <img src="images/gallery/yly-event2.jpg" alt="YLY Event">
+                    <div class="slide-caption">Team Building Activities</div>
+                </div>
+                <div class="slide">
+                    <img src="images/gallery/yly-event3.jpg" alt="YLY Event">
+                    <div class="slide-caption">Awards Ceremony</div>
+                </div>
+                <div class="slide">
+                    <img src="images/gallery/yly-event4.jpg" alt="YLY Event">
+                    <div class="slide-caption">Cultural Challenge</div>
+                </div>
+                <div class="slide">
+                    <img src="images/gallery/yly-event5.jpg" alt="YLY Event">
+                    <div class="slide-caption">Sports Competition</div>
+                </div>
+                <div class="slide">
+                    <img src="images/gallery/yly-event6.jpg" alt="YLY Event">
+                    <div class="slide-caption">Creative Arts Workshop</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="email-form">
+            <h3 class="form-title">Get Notified When We Launch</h3>
+            <input type="email" class="email-input" placeholder="Enter your email address">
+            <button class="submit-btn">Notify Me</button>
+        </div>
+        
+        <div class="nav-buttons">
+            <a href="about.html" class="nav-button">About Us</a>
+            <a href="join-now.html" class="nav-button">Join Now</a>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 YLY Competition. All Rights Reserved.</p>
+            <div class="social-links">
+                <a href="#" class="social-link">𝕏</a>
+                <a href="#" class="social-link">𝕗</a>
+                <a href="#" class="social-link">𝕀</a>
+                <a href="#" class="social-link">𝕐</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Create stars
+        function createStars() {
+            const stars = document.getElementById('stars');
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+            const starCount = Math.floor(screenWidth * screenHeight / 1000);
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // Random position
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                
+                // Random size
+                const size = Math.random() * 3 + 1;
+                
+                // Random delay for twinkling
+                const delay = Math.random() * 4;
+                
+                star.style.left = `${left}%`;
+                star.style.top = `${top}%`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.animationDelay = `${delay}s`;
+                
+                stars.appendChild(star);
+            }
+        }
+        
+        // Set the countdown date to Saturday at 12:00
+        function updateCountdown() {
+            // Get current date and calculate next Saturday
+            const now = new Date();
+            const currentDay = now.getDay(); // 0 is Sunday, 6 is Saturday
+            const daysUntilSaturday = (6 + 7 - currentDay) % 7;
+            
+            const saturdayDate = new Date(now);
+            saturdayDate.setDate(now.getDate() + daysUntilSaturday);
+            saturdayDate.setHours(12, 0, 0, 0); // Set to 12:00 noon
+            
+            // If today is Saturday and it's past noon, set to next Saturday
+            if (currentDay === 6 && now.getHours() >= 12) {
+                saturdayDate.setDate(saturdayDate.getDate() + 7);
+            }
+            
+            const distance = saturdayDate - now;
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').innerText = days.toString().padStart(2, '0');
+            document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+            
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById('countdown').innerHTML = "<h3>The magic has begun!</h3>";
+            }
+        }
+        
+        // Notify button action
+        document.querySelector('.submit-btn').addEventListener('click', function() {
+            const email = document.querySelector('.email-input').value;
+            if (email && email.includes('@')) {
+                alert('Thank you! We will notify you when YLY Competition launches.');
+                document.querySelector('.email-input').value = '';
+            } else {
+                alert('Please enter a valid email address.');
+            }
+        });
+        
+        // Initialize
+        createStars();
+        updateCountdown();
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        
+        // Adjust slideshow speed based on screen width
+        function adjustSlideshowSpeed() {
+            const slideshow = document.getElementById('slideshow');
+            const screenWidth = window.innerWidth;
+            
+            if (screenWidth <= 480) {
+                slideshow.style.animationDuration = '30s';
+            } else if (screenWidth <= 768) {
+                slideshow.style.animationDuration = '35s';
+            } else {
+                slideshow.style.animationDuration = '40s';
+            }
+        }
+        
+        window.addEventListener('resize', adjustSlideshowSpeed);
+        adjustSlideshowSpeed(); // Initial adjustment
+    </script>
+</body>
+</html> 
