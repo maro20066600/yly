@@ -1,0 +1,45 @@
+{
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/gateway.html",
+      "permanent": true
+    },
+    {
+      "source": "/index",
+      "destination": "/gateway.html",
+      "permanent": true
+    },
+    {
+      "source": "/index.html",
+      "destination": "/gateway.html",
+      "permanent": true
+    },
+    {
+      "source": "/main.html",
+      "destination": "/coming-soon.html",
+      "permanent": true
+    },
+    {
+      "source": "/join-now.html",
+      "destination": "/coming-soon.html",
+      "permanent": true
+    },
+    {
+      "source": "/((?!gateway.html|coming-soon.html|about.html|styles.css|script.js|images/|audio/).*)",
+      "destination": "/gateway.html",
+      "permanent": false
+    }
+  ],
+  "headers": [
+    {
+      "source": "/((?!gateway.html|coming-soon.html|about.html|styles.css|script.js|images/|audio/).*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex"
+        }
+      ]
+    }
+  ]
+}
