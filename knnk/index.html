@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YLY Competition - Magical Lottery</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'ParryHotter';
+            src: url('/Users/marooo/knnk/font/parry-hotter.regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        /* تعليمات لاستخدام صورة محلية */
+        .use-local-bg .landing-container {
+            background-image: url('./images/hogwarts.jpg');
+        }
+        
+        /* إذا لم تكن الصورة المحلية متوفرة، استخدم الصورة عبر الإنترنت */
+        @media (max-width: 1px) {
+            .use-local-bg .landing-container {
+                background-image: url('https://i.imgur.com/tYcNGsw.jpg');
+            }
+        }
+        
+        /* تحريك العنوان للأعلى والأسفل */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating-title {
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        /* أنماط البيوت */
+        .houses-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 50px;
+            perspective: 1000px;
+        }
+        
+        .house-card {
+            position: relative;
+            width: 280px;
+            height: 400px;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            border-radius: 20px;
+            overflow: visible;
+            transition: transform 0.3s ease-in-out;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .house-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .house-door {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-origin: left;
+            transform-style: preserve-3d;
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 20px;
+            overflow: hidden;
+            z-index: 10;
+        }
+        
+        .house-card.door-open .house-door {
+            transform: rotateY(-95deg);
+        }
+        
+        .door-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.5);
+            border: 8px solid;
+            display: flex;
+            align-items: flex-end;
+            padding-bottom: 20px;
+            box-sizing: border-box;
+        }
+        
+        .door-handle {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            width: 14px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(255, 215, 0, 0.7);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+            z-index: 2;
+        }
+        
+        .house-name-plate {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            text-align: center;
+            border-top: 2px solid rgba(255, 255, 255, 0.3);
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+        }
+        
+        .door-frame {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            z-index: 5;
+            border: 12px solid;
+            box-sizing: border-box;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
+        }
+        
+        .doorway {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: black;
+        }
+        
+        .doorway-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 5;
+        }
+        
+        .house-card.door-open .doorway-particles {
+            opacity: 1;
+        }
+        
+        .house-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .house-description {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        /* House-specific styles */
+        .gryffindor .door-front {
+            background-image: url('images/houses/1.png');
+            border-color: #740001;
+        }
+        
+        .gryffindor .door-frame {
+            border-color: #D3A625;
+            background: rgba(116, 0, 1, 0.6);
+        }
+        
+        .gryffindor .doorway {
+            background: radial-gradient(circle, #a90001 0%, #740001 100%);
+        }
+        
+        .hufflepuff .door-front {
+            background-image: url('images/houses/2.png');
+            border-color: #ECB939;
+        }
+        
+        .hufflepuff .door-frame {
+            border-color: #60605C;
+            background: rgba(236, 185, 57, 0.3);
+        }
+        
+        .hufflepuff .doorway {
+            background: radial-gradient(circle, #ECB939 0%, #946b15 100%);
+        }
+        
+        .ravenclaw .door-front {
+            background-image: url('images/houses/3.png');
+            border-color: #0E1A40;
+        }
+        
+        .ravenclaw .door-frame {
+            border-color: #946B2D;
+            background: rgba(14, 26, 64, 0.3);
+        }
+        
+        .ravenclaw .doorway {
+            background: radial-gradient(circle, #0E1A40 0%, #05081a 100%);
+        }
+        
+        .slytherin .door-front {
+            background-image: url('images/houses/4.png');
+            border-color: #1A472A;
+        }
+        
+        .slytherin .door-frame {
+            border-color: #5D5D5D;
+            background: rgba(26, 71, 42, 0.6);
+        }
+        
+        .slytherin .doorway {
+            background: radial-gradient(circle, #2a7245 0%, #1A472A 100%);
+        }
+        
+        /* تأثيرات ضوئية للأبواب */
+        .house-door::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+            opacity: 0;
+            z-index: 5;
+            transition: opacity 0.3s ease-in-out;
+            pointer-events: none;
+        }
+        
+        .house-card:hover .house-door::before {
+            opacity: 0.2;
+        }
+        
+        .house-card.door-open .house-door::before {
+            opacity: 0.5;
+            animation: pulse-light 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-light {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+        
+        /* تحسين تأثير فتح الباب */
+        .house-card.door-open .house-door {
+            transform: rotateY(-110deg);
+            transition: transform 1.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        
+        /* إضافة تأثير انفجار النور */
+        .light-burst {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, white 0%, transparent 70%);
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-out;
+        }
+        
+        .light-burst.active {
+            animation: light-explosion 1.5s ease-out forwards;
+        }
+        
+        @keyframes light-explosion {
+            0% { opacity: 0; transform: scale(0.1); }
+            50% { opacity: 0.8; transform: scale(1.2); }
+            100% { opacity: 0; transform: scale(2); }
+        }
+        
+        /* تحسين تأثيرات الجسيمات */
+        @keyframes gryffindor-particles {
+            0% { box-shadow: 0 0 50px 20px #740001, 0 0 100px 50px #D3A625; opacity: 0.3; }
+            50% { box-shadow: 0 0 100px 40px #740001, 0 0 150px 80px #D3A625; opacity: 0.7; }
+            100% { box-shadow: 0 0 50px 20px #740001, 0 0 100px 50px #D3A625; opacity: 0.3; }
+        }
+        
+        @keyframes hufflepuff-particles {
+            0% { box-shadow: 0 0 50px 20px #ECB939, 0 0 100px 50px #60605C; opacity: 0.3; }
+            50% { box-shadow: 0 0 100px 40px #ECB939, 0 0 150px 80px #60605C; opacity: 0.7; }
+            100% { box-shadow: 0 0 50px 20px #ECB939, 0 0 100px 50px #60605C; opacity: 0.3; }
+        }
+        
+        @keyframes ravenclaw-particles {
+            0% { box-shadow: 0 0 50px 20px #0E1A40, 0 0 100px 50px #946B2D; opacity: 0.3; }
+            50% { box-shadow: 0 0 100px 40px #0E1A40, 0 0 150px 80px #946B2D; opacity: 0.7; }
+            100% { box-shadow: 0 0 50px 20px #0E1A40, 0 0 100px 50px #946B2D; opacity: 0.3; }
+        }
+        
+        @keyframes slytherin-particles {
+            0% { box-shadow: 0 0 50px 20px #1A472A, 0 0 100px 50px #5D5D5D; opacity: 0.3; }
+            50% { box-shadow: 0 0 100px 40px #1A472A, 0 0 150px 80px #5D5D5D; opacity: 0.7; }
+            100% { box-shadow: 0 0 50px 20px #1A472A, 0 0 100px 50px #5D5D5D; opacity: 0.3; }
+        }
+        
+        /* تأثير حركة الأبواب */
+        .doorway-particles {
+            animation-duration: 3s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            animation-fill-mode: both;
+        }
+        
+        .doorway::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .house-card.door-open .doorway::after {
+            opacity: 1;
+            animation: doorway-glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes doorway-glow {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+        
+        /* تأثير انتقال الصفحة */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        
+        .page-transition.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        /* House groups container */
+        .house-groups-container {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in;
+        }
+        
+        .house-groups-container.active {
+            display: block;
+            opacity: 1;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* تصميم قسم المجموعات لكل بيت */
+        .house-groups {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        
+        .house-groups.active {
+            display: block;
+        }
+        
+        /* Styling for back to houses button */
+        .back-to-houses {
+            background: rgba(25, 25, 35, 0.8);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin: 20px 0;
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .back-to-houses:hover {
+            background: rgba(50, 50, 70, 0.9);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        #gryffindor-groups .back-to-houses {
+            border-left: 4px solid #740001;
+            border-right: 4px solid #D3A625;
+        }
+        
+        #hufflepuff-groups .back-to-houses {
+            border-left: 4px solid #ECB939;
+            border-right: 4px solid #60605C;
+        }
+        
+        #ravenclaw-groups .back-to-houses {
+            border-left: 4px solid #0E1A40;
+            border-right: 4px solid #946B2D;
+        }
+        
+        #slytherin-groups .back-to-houses {
+            border-left: 4px solid #1A472A;
+            border-right: 4px solid #5D5D5D;
+        }
+        
+        /* تعديلات على العناوين والألوان الخاصة بكل بيت */
+        .groups-section.gryffindor-section h3 {
+            color: #ff0000;
+            border-bottom: 3px solid #d3a625;
+            padding-bottom: 10px;
+            font-size: 2rem;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+        
+        .groups-section.hufflepuff-section h3 {
+            color: #ffd700;
+            border-bottom: 3px solid #372e29;
+            padding-bottom: 10px;
+            font-size: 2rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        .groups-section.ravenclaw-section h3 {
+            color: #0066cc;
+            border-bottom: 3px solid #946b2d;
+            padding-bottom: 10px;
+            font-size: 2rem;
+            text-shadow: 0 0 10px rgba(0, 102, 204, 0.5);
+        }
+        
+        .groups-section.slytherin-section h3 {
+            color: #00cc66;
+            border-bottom: 3px solid #aaaaaa;
+            padding-bottom: 10px;
+            font-size: 2rem;
+            text-shadow: 0 0 10px rgba(0, 204, 102, 0.5);
+        }
+        
+        /* Lottery Page */
+        .lottery-container {
+            min-height: 100vh;
+            background: rgba(10, 12, 28, 0.9);
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .lottery-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('images/backgrounds/lottery/magic-book.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            opacity: 0.2;
+            z-index: -1;
+        }
+        
+        .magical-stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .magical-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: #e8d7b0;
+            border-radius: 50%;
+            animation: twinkle-star 3s infinite;
+        }
+        
+        @keyframes twinkle-star {
+            0% { opacity: 0; }
+            50% { opacity: 1; transform: scale(1.5); }
+            100% { opacity: 0; }
+        }
+        
+        .lottery-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #e8d7b0;
+            text-shadow: 0 0 10px rgba(232, 215, 176, 0.6);
+            font-size: 2.8rem;
+            position: relative;
+        }
+        
+        .lottery-title::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                rgba(232, 215, 176, 0) 0%, 
+                rgba(232, 215, 176, 0.8) 50%, 
+                rgba(232, 215, 176, 0) 100%);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(232, 215, 176, 0.8);
+            animation: glow-line 3s infinite alternate;
+        }
+        
+        @keyframes glow-line {
+            0% { width: 300px; opacity: 0.5; }
+            100% { width: 400px; opacity: 1; }
+        }
+        
+        .magical-clouds {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, 
+                rgba(83, 50, 122, 0) 0%,
+                rgba(83, 50, 122, 0.1) 25%,
+                rgba(83, 50, 122, 0.1) 75%,
+                rgba(83, 50, 122, 0) 100%);
+            z-index: -1;
+            filter: blur(8px);
+            opacity: 0.5;
+            animation: float-clouds 30s infinite linear;
+        }
+        
+        @keyframes float-clouds {
+            0% { background-position: 0 0; }
+            100% { background-position: 100% 0; }
+        }
+
+        .hidden-kingdom-title {
+            font-family: 'ParryHotter', cursive;
+            text-align: left;
+            margin-bottom: 0.5rem;
+            margin-left: 2rem;
+            color: #d9d9d9;
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.5),
+                0 0 15px rgba(255, 255, 255, 0.3);
+            font-size: 2.2rem;
+            letter-spacing: 2px;
+        }
+
+        .group-title {
+            font-size: 4rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #e8d7b0;
+            text-shadow: 
+                0 0 15px rgba(232, 215, 176, 0.8),
+                0 0 25px rgba(232, 215, 176, 0.6);
+            font-family: 'Cinzel Decorative', cursive;
+            font-weight: 900;
+        }
+
+        .results-group-title {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #ffb700;
+            text-shadow: 
+                0 0 10px rgba(255, 183, 0, 0.7),
+                0 0 20px rgba(255, 183, 0, 0.5);
+            font-family: 'Cinzel Decorative', cursive;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-content h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.2rem;
+            text-wrap: balance;
+            white-space: nowrap;
+        }
+
+        .card-description {
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.2;
+        }
+    </style>
+</head>
+<body class="use-local-bg">
+    <div id="player"></div>
+    <div class="landing-container">
+        <div class="owl-container">
+            <div class="owl">
+                <div class="message-banner">Welcome Our Magicians</div>
+            </div>
+        </div>
+        <div class="landing-content-floating">
+            <h1 class="main-title floating-title">YLY Competition</h1>
+            <div class="button-group">
+                <button id="startButton" class="magic-button">VIEW ALL RESULTS</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lottery Page (Hidden Initially) -->
+    <div class="lottery-container" style="display: none;">
+        <h1 class="hidden-kingdom-title">THE HIDDEN KINGDOM</h1>
+        <h1 class="lottery-title">The Magical YLY Lottery</h1>
+        
+        <div class="magical-stars" id="magicalStars"></div>
+        <div class="magical-clouds"></div>
+            
+            <div class="view-results-container">
+                <button id="viewAllResultsButton" class="magic-button view-results-btn">VIEW ALL RESULTS</button>
+            </div>
+            
+        <!-- Houses Selection -->
+        <div class="houses-selection">
+            
+            <div class="houses-container">
+                <!-- Gryffindor House Card -->
+                <div class="house-card gryffindor" data-house="gryffindor">
+                    <div class="house-door">
+                        <div class="door-front">
+                            <div class="door-handle"></div>
+                            <div class="house-name-plate">
+                                <div class="house-name">Gryffindor</div>
+                                <div class="house-description">Courage, Bravery & Determination</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="door-frame"></div>
+                    <div class="doorway">
+                        <div class="doorway-particles" id="gryffindor-particles"></div>
+                    </div>
+                </div>
+                
+                <!-- Hufflepuff House Card -->
+                <div class="house-card hufflepuff" data-house="hufflepuff">
+                    <div class="house-door">
+                        <div class="door-front">
+                            <div class="door-handle"></div>
+                            <div class="house-name-plate">
+                                <div class="house-name">Hufflepuff</div>
+                                <div class="house-description">Hard Work, Patience & Loyalty</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="door-frame"></div>
+                    <div class="doorway">
+                        <div class="doorway-particles" id="hufflepuff-particles"></div>
+                    </div>
+                </div>
+                
+                <!-- Ravenclaw House Card -->
+                <div class="house-card ravenclaw" data-house="ravenclaw">
+                    <div class="house-door">
+                        <div class="door-front">
+                            <div class="door-handle"></div>
+                            <div class="house-name-plate">
+                                <div class="house-name">Ravenclaw</div>
+                                <div class="house-description">Intelligence, Creativity & Wisdom</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="door-frame"></div>
+                    <div class="doorway">
+                        <div class="doorway-particles" id="ravenclaw-particles"></div>
+                    </div>
+                </div>
+                
+                <!-- Slytherin House Card -->
+                <div class="house-card slytherin" data-house="slytherin">
+                    <div class="house-door">
+                        <div class="door-front">
+                            <div class="door-handle"></div>
+                            <div class="house-name-plate">
+                                <div class="house-name">Slytherin</div>
+                                <div class="house-description">Ambition, Cunning & Leadership</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="door-frame"></div>
+                    <div class="doorway">
+                        <div class="doorway-particles" id="slytherin-particles"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Group Selection (Hidden Initially) -->
+        <div class="group-selection" style="display: none;">
+            
+            <!-- Gryffindor House Groups -->
+            <div id="gryffindor-groups" class="house-groups-container">
+                <button class="back-to-houses">← Back to Houses</button>
+                <div class="groups-section gryffindor-section">
+                    <h3>Gryffindor House Groups</h3>
+                <div class="groups-grid">
+                    <div class="group-card" data-group="tiktok">
+                        <div class="wizard-hat"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="card-content">
+                            <h3>TikTok</h3>
+                            <div class="card-icon">📱</div>
+                            <p class="group-description">Courage in Social Media</p>
+                        </div>
+                    </div>
+                        <div class="group-card" data-group="film">
+                        <div class="wizard-hat"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="card-content">
+                                <h3>The Film</h3>
+                                <div class="card-icon">🎬</div>
+                                <p class="group-description">Brave Storytelling</p>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hufflepuff House Groups -->
+            <div id="hufflepuff-groups" class="house-groups-container">
+                <button class="back-to-houses">← Back to Houses</button>
+                <div class="groups-section hufflepuff-section">
+                    <h3>Hufflepuff House Groups</h3>
+                <div class="groups-grid">
+                        <div class="group-card" data-group="contentcreator">
+                        <div class="wizard-hat"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="card-content">
+                                <h3 style="font-size: 1rem;">Content Creator</h3>
+                                <div class="card-icon">🎥</div>
+                                <p class="group-description">Creative Vision</p>
+                            </div>
+                        </div>
+                        <div class="group-card" data-group="singing">
+                        <div class="wizard-hat"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="card-content">
+                                <h3>Singing</h3>
+                            <div class="card-icon">🎤</div>
+                            <p class="group-description">Joy of Music & Harmony</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ravenclaw House Groups -->
+            <div id="ravenclaw-groups" class="house-groups-container">
+                <button class="back-to-houses">← Back to Houses</button>
+                <div class="groups-section ravenclaw-section">
+                    <h3>Ravenclaw House Groups</h3>
+                <div class="groups-grid">
+                        <div class="group-card" data-group="dubbing">
+                        <div class="wizard-hat"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="card-content">
+                                <h3>Dubbing</h3>
+                            <div class="card-icon">🎙️</div>
+                                <p class="group-description">Wisdom in Voice</p>
+                        </div>
+                    </div>
+                    <div class="group-card" data-group="design">
+                        <div class="wizard-hat"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="card-content">
+                            <h3>Design</h3>
+                            <div class="card-icon">🎨</div>
+                            <p class="group-description">Creative Intelligence</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slytherin House Groups -->
+            <div id="slytherin-groups" class="house-groups-container">
+                <button class="back-to-houses">← Back to Houses</button>
+                <div class="groups-section slytherin-section">
+                    <h3>Slytherin House Groups</h3>
+                <div class="groups-grid">
+                        <div class="group-card" data-group="ads">
+                        <div class="wizard-hat"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="card-content">
+                                <h3>Ads</h3>
+                                <div class="card-icon">📢</div>
+                            <p class="group-description">Strategic Marketing</p>
+                        </div>
+                    </div>
+                        <div class="group-card" data-group="reel">
+                        <div class="wizard-hat"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="star"></div>
+                        <div class="card-content">
+                                <h3>Reel</h3>
+                                <div class="card-icon">🎞️</div>
+                                <p class="group-description">Ambitious Visual Stories</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Draw Area (Hidden until group selection) -->
+        <div class="card-draw-area" style="display: none;">
+            <h2 id="drawTitle"><span id="currentGroup" class="group-title"></span></h2>
+            
+            <div class="cards-container">
+                <!-- Cards will be added here dynamically -->
+            </div>
+            
+            <div class="draw-controls">
+                <button id="drawButton" class="magic-button">Start the Magic Lottery</button>
+                <button id="redrawButton" class="magic-button" style="display: none;">Redraw</button>
+                <button id="printButton" class="magic-button" style="display: none;">Print Results</button>
+                <button id="backButton" class="magic-button">Back to Houses</button>
+            </div>
+            
+            <div class="results-scroll" style="display: none;">
+                <div class="wand-left"></div>
+                <h3>Selected Participants</h3>
+                <div id="resultsContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- إضافة عناصر للتأثيرات البصرية -->
+    <div class="light-burst" id="lightBurst"></div>
+    <div class="page-transition" id="pageTransition"></div>
+
+    <script src="script.js"></script>
+    <script>
+        // إضافة مشغل الصوت بدون واجهة رفع الملفات
+        var audioPlayer = document.createElement('audio');
+        audioPlayer.id = 'audioPlayer';
+        audioPlayer.loop = true;
+        audioPlayer.autoplay = true;
+        audioPlayer.volume = 0.2; // تخفيض مستوى الصوت أكثر
+        audioPlayer.src = 'audio/school-of-magic-inspired-by-harry-potter-289617.mp3';
+        
+        // إضافة مشغل الصوت بشكل غير مرئي
+        document.body.appendChild(audioPlayer);
+        
+        // تشغيل الصوت الأساسي تلقائياً عند تحميل الصفحة بعد تفاعل المستخدم
+        document.addEventListener('click', function playAudio() {
+            if (audioPlayer) {
+                audioPlayer.play().catch(function(error) {
+                    console.error('فشل التشغيل التلقائي:', error);
+                });
+                // إزالة المستمع بعد التنفيذ
+                document.removeEventListener('click', playAudio);
+            }
+        });
+        
+        // تغيير الموسيقى عند الضغط على زر البدء
+        document.getElementById('startButton').addEventListener('click', function() {
+            // بدلاً من عرض صفحة الاختيار، يتم التحويل مباشرة إلى صفحة النتائج
+            window.location.href = 'results.html';
+        });
+        
+        // تفعيل التبديل بين البيوت والمجموعات
+        document.addEventListener('DOMContentLoaded', function() {
+            // إعداد عناصر التأثيرات
+            const lightBurst = document.getElementById('lightBurst');
+            const pageTransition = document.getElementById('pageTransition');
+            
+            // أصوات تأثيرات إضافية
+            const magicSounds = {
+                doorOpen: 'audio/⚡10 Harry Potter Spells (Sound Effects) [bqixAkezavI] (2).mp3',
+                magicBurst: 'audio/school-of-magic-inspired-by-harry-potter-289617.mp3',
+                whoosh: 'audio/the-mischievous-wizard-311524.mp3',
+                // أصوات المدارس
+                gryffindor: 'audio/house audio/gryffindor.mp3',
+                hufflepuff: 'audio/house audio/hufflepuff.mp3',
+                ravenclaw: 'audio/house audio/ravenclaw.mp3',
+                slytherin: 'audio/house audio/slytherin.mp3'
+            };
+            
+            // دالة لتشغيل الصوت مع إمكانية تحديد مدة التشغيل
+            function playSound(soundPath, volume = 0.5, duration = null) {
+                const sound = new Audio(soundPath);
+                sound.volume = volume;
+                
+                // إذا تم تحديد مدة محددة للتشغيل
+                if (duration) {
+                    sound.play().catch(err => console.log('Audio play failed:', err));
+                    // إيقاف الصوت بعد المدة المحددة
+                    setTimeout(() => {
+                        sound.pause();
+                        sound.currentTime = 0;
+                    }, duration);
+                } else {
+                    sound.play().catch(err => console.log('Audio play failed:', err));
+                }
+                
+                return sound;
+            }
+            
+            // متغير لتخزين الصوت الحالي للمدرسة
+            let currentHouseSound = null;
+            
+            // تحديد الجزيئات للبيوت
+            const particleContainers = {
+                gryffindor: document.getElementById('gryffindor-particles'),
+                hufflepuff: document.getElementById('hufflepuff-particles'),
+                ravenclaw: document.getElementById('ravenclaw-particles'),
+                slytherin: document.getElementById('slytherin-particles')
+            };
+            
+            // تطبيق تأثيرات الحركة على الجزيئات
+            if (particleContainers.gryffindor) particleContainers.gryffindor.style.animation = 'gryffindor-particles 3s infinite';
+            if (particleContainers.hufflepuff) particleContainers.hufflepuff.style.animation = 'hufflepuff-particles 3s infinite';
+            if (particleContainers.ravenclaw) particleContainers.ravenclaw.style.animation = 'ravenclaw-particles 3s infinite';
+            if (particleContainers.slytherin) particleContainers.slytherin.style.animation = 'slytherin-particles 3s infinite';
+            
+            // تعديل طريقة التعامل مع النقر على البيوت
+            const houseCards = document.querySelectorAll('.house-card');
+            
+            houseCards.forEach(card => {
+                // تشغيل صوت المدرسة عند المرور بالماوس
+                card.addEventListener('mouseenter', function() {
+                    const house = this.getAttribute('data-house');
+                    // إيقاف أي صوت مدرسة يعمل حالياً
+                    if (currentHouseSound) {
+                        currentHouseSound.pause();
+                        currentHouseSound.currentTime = 0;
+                    }
+                    // تشغيل صوت المدرسة الجديد
+                    if (magicSounds[house]) {
+                        currentHouseSound = new Audio(magicSounds[house]);
+                        currentHouseSound.volume = 0.4;
+                        currentHouseSound.play().catch(err => console.log('House audio play failed:', err));
+                    }
+                });
+                
+                // حدث النقر
+                card.addEventListener('click', function() {
+                    const house = this.getAttribute('data-house');
+                    
+                    // إيقاف صوت المدرسة إذا كان يعمل
+                    if (currentHouseSound) {
+                        currentHouseSound.pause();
+                        currentHouseSound.currentTime = 0;
+                        currentHouseSound = null;
+                    }
+                    
+                    // تشغيل صوت فتح الباب لمدة 5 ثواني فقط
+                    playSound(magicSounds.doorOpen, 0.7, 5000);
+                    
+                    // إضافة تأثير فتح الباب
+                    this.classList.add('door-open');
+                    
+                    // عرض تأثير الضوء في الباب بعد فترة قصيرة
+                    setTimeout(() => {
+                        const doorwayGlow = this.querySelector('.doorway');
+                        if (doorwayGlow) doorwayGlow.classList.add('active-glow');
+                        
+                        // تشغيل صوت الانفجار السحري
+                        playSound(magicSounds.magicBurst, 0.4);
+                    }, 800);
+                    
+                    // انتظار اكتمال تأثير فتح الباب ثم عرض تأثير ضوئي كبير
+                    setTimeout(() => {
+                        // تفعيل تأثير انفجار الضوء
+                        lightBurst.classList.add('active');
+                        
+                        // تشغيل صوت الانتقال بمستوى منخفض جداً
+                        playSound(magicSounds.whoosh, 0.08, 4000);
+                        
+                        // إخفاء حاوية البيوت مع تأثير التلاشي
+                        document.querySelector('.houses-container').style.opacity = '0';
+                        
+                        // بعد التلاشي، الانتقال إلى عرض صفحة القرعة
+                        setTimeout(() => {
+                            // إظهار تأثير الانتقال بين الصفحات
+                            pageTransition.classList.add('active');
+                            
+                            setTimeout(() => {
+                                // إخفاء جميع الأقسام غير المطلوبة
+                                document.querySelector('.houses-container').style.display = 'none';
+                                document.querySelectorAll('.house-groups-container').forEach(container => {
+                                    container.style.display = 'none';
+                                });
+                                
+                                // إظهار قسم اختيار المجموعات أولا
+                                document.querySelector('.group-selection').style.display = 'block';
+                                document.querySelector(`#${house}-groups`).style.display = 'block';
+                                document.querySelector(`#${house}-groups`).classList.add('active');
+                                
+                                // بعد ذلك بوقت قصير، إخفاء تأثير الانتقال
+                                setTimeout(() => {
+                                    pageTransition.classList.remove('active');
+                                    lightBurst.classList.remove('active');
+                                }, 500);
+                            }, 500);
+                        }, 500);
+                    }, 1500);
+                });
+            });
+            
+            // تحسين تفاعل بطاقات المجموعات للانتقال إلى صفحة القرعة
+            const groupCards = document.querySelectorAll('.group-card');
+            groupCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // الحصول على المجموعة المختارة
+                    const group = this.getAttribute('data-group');
+                    
+                    // انتقال مباشر بدون تأثير النور
+                    // إخفاء قسم المجموعات
+                    document.querySelector('.group-selection').style.display = 'none';
+                    
+                    // تحديث عنوان المجموعة المختارة
+                    document.getElementById('currentGroup').textContent = group;
+                    
+                    // إظهار منطقة سحب البطاقات
+                    document.querySelector('.card-draw-area').style.display = 'block';
+                    
+                    // تفعيل تأثيرات صفحة القرعة
+                    animateLotteryPage();
+                });
+            });
+            
+            // دالة لتنشيط تأثيرات صفحة القرعة
+            function animateLotteryPage() {
+                // إضافة تأثير دخول على عنوان السحب
+                const drawTitle = document.getElementById('drawTitle');
+                if (drawTitle) drawTitle.style.animation = 'fadeInDown 1s ease-out forwards';
+                
+                // إضافة تأثيرات على أزرار التحكم
+                const drawButton = document.getElementById('drawButton');
+                if (drawButton) drawButton.style.animation = 'pulse 1.5s infinite';
+                
+                // إضافة تأثير على حاوية البطاقات
+                const cardsContainer = document.querySelector('.cards-container');
+                if (cardsContainer) cardsContainer.style.animation = 'fadeIn 1s ease-out forwards';
+            }
+            
+            // التعامل مع زر الرجوع إلى البيوت
+            document.querySelectorAll('.back-to-houses').forEach(button => {
+                button.addEventListener('click', function() {
+                    // تشغيل تأثير الانتقال الضوئي
+                    lightBurst.classList.add('active');
+                    playSound(magicSounds.whoosh, 0.08, 4000);
+                    
+                    setTimeout(() => {
+                        pageTransition.classList.add('active');
+                        
+                        // إخفاء قسم المجموعات
+                        const currentGroupContainer = this.closest('.house-groups-container');
+                        currentGroupContainer.classList.remove('active');
+                        
+                        setTimeout(() => {
+                            // إعادة تعيين جميع الأبواب إلى حالة مغلقة
+                            document.querySelectorAll('.house-card').forEach(card => {
+                                card.classList.remove('door-open');
+                            });
+                            
+                            // إخفاء جميع حاويات المجموعات
+                            document.querySelectorAll('.house-groups-container').forEach(container => {
+                                container.style.display = 'none';
+                            });
+                            
+                            // إخفاء قسم القرعة
+                            document.querySelector('.card-draw-area').style.display = 'none';
+                            
+                            // إظهار حاوية البيوت
+                            document.querySelector('.houses-container').style.display = 'flex';
+                            
+                            setTimeout(() => {
+                                document.querySelector('.houses-container').style.opacity = '1';
+                                pageTransition.classList.remove('active');
+                                lightBurst.classList.remove('active');
+                            }, 300);
+                        }, 500);
+                    }, 500);
+                });
+            });
+            
+            // تحديث التعامل مع زر الرجوع في صفحة القرعة
+            const backButton = document.getElementById('backButton');
+            if (backButton) {
+                backButton.addEventListener('click', function() {
+                    // تشغيل تأثير الانتقال الضوئي
+                    lightBurst.classList.add('active');
+                    playSound(magicSounds.whoosh, 0.08, 4000);
+                    
+                    setTimeout(() => {
+                        pageTransition.classList.add('active');
+                        
+                        setTimeout(() => {
+                            // إخفاء قسم القرعة
+                            document.querySelector('.card-draw-area').style.display = 'none';
+                            
+                            // إظهار قسم اختيار البيوت
+                            document.querySelector('.houses-selection').style.display = 'block';
+                            document.querySelector('.houses-container').style.display = 'flex';
+                            
+                            // بعد ذلك بوقت قصير، إخفاء تأثير الانتقال
+                            setTimeout(() => {
+                                document.querySelector('.houses-container').style.opacity = '1';
+                                pageTransition.classList.remove('active');
+                                lightBurst.classList.remove('active');
+                            }, 300);
+                        }, 500);
+                    }, 500);
+                });
+            }
+            
+            // إضافة CSS للتأثيرات الجديدة
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeInDown {
+                    from { opacity: 0; transform: translateY(-50px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                
+                @keyframes pulse {
+                    0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
+                    50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(255, 215, 0, 0.8); }
+                }
+                
+                .active-glow {
+                    box-shadow: 0 0 50px 20px white !important;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+
+        // إنشاء النجوم في خلفية صفحة القرعة
+        document.addEventListener('DOMContentLoaded', function() {
+            const starsContainer = document.getElementById('magicalStars');
+            if (starsContainer) {
+                // إنشاء 100 نجمة بمواقع عشوائية
+                for (let i = 0; i < 100; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'magical-star';
+                    star.style.left = `${Math.random() * 100}%`;
+                    star.style.top = `${Math.random() * 100}%`;
+                    
+                    // تأخير عشوائي للتلألؤ
+                    star.style.animationDelay = `${Math.random() * 5}s`;
+                    
+                    // أحجام متنوعة للنجوم
+                    const size = Math.random() * 3 + 1;
+                    star.style.width = `${size}px`;
+                    star.style.height = `${size}px`;
+                    
+                    starsContainer.appendChild(star);
+                }
+            }
+        });
+    </script>
+</body>
+</html> 
