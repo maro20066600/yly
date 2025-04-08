@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "firebase": "^11.6.0",
-    "three": "^0.175.0"
-  }
-}
