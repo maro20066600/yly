@@ -19,6 +19,7 @@
             padding: 0;
             font-family: 'Cinzel Decorative', cursive;
             background-color: #0a0c1c;
+            overflow-x: hidden;
         }
         
         /* Landing container styles */
@@ -59,6 +60,9 @@
             text-align: center;
             color: white;
             animation: float 6s ease-in-out infinite;
+            width: 90%;
+            max-width: 800px;
+            padding: 20px;
         }
         
         .main-title {
@@ -234,6 +238,65 @@
         .magic-calling-text.active {
             transform: translate(-50%, -50%) scale(1);
             opacity: 1;
+        }
+        
+        /* Responsive styles for mobile devices */
+        @media screen and (max-width: 768px) {
+            .main-title {
+                font-size: 3.5rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .magic-button {
+                padding: 12px 24px;
+                font-size: 1.4rem;
+            }
+            
+            .owl-container {
+                top: 15px;
+            }
+            
+            .owl {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .message-banner {
+                font-size: 0.8rem;
+                padding: 4px 12px;
+                bottom: -15px;
+            }
+            
+            .magic-calling-text {
+                font-size: 3rem;
+                letter-spacing: 2px;
+                -webkit-text-stroke: 0.5px #1E3A8A;
+            }
+        }
+        
+        /* Extra small devices */
+        @media screen and (max-width: 480px) {
+            .main-title {
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+            }
+            
+            .magic-button {
+                padding: 10px 20px;
+                font-size: 1.2rem;
+            }
+            
+            .owl {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .magic-calling-text {
+                font-size: 2rem;
+                white-space: normal;
+                width: 90%;
+                letter-spacing: 1px;
+            }
         }
     </style>
 </head>
