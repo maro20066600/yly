@@ -62,7 +62,7 @@
         }
         
         .main-title {
-            font-size: 4rem;
+            font-size: 5.5rem;
             margin-bottom: 2rem;
             text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
             color: #e8d7b0;
@@ -152,6 +152,64 @@
             box-shadow: 0 0 10px rgba(232, 215, 176, 0.3);
             border: 1px solid rgba(232, 215, 176, 0.2);
         }
+        
+        /* Page transition effect */
+        .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            z-index: 999;
+            transform: scale(0);
+            transform-origin: center;
+            transition: transform 1.2s cubic-bezier(0.86, 0, 0.07, 1);
+            pointer-events: none;
+        }
+        
+        .page-transition.active {
+            transform: scale(10);
+        }
+        
+        /* Shutter animation */
+        .shutter-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 998;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        
+        .shutter-container.active {
+            opacity: 1;
+        }
+        
+        .shutter {
+            height: 50%;
+            width: 100%;
+            background: black;
+            transform: scaleY(0);
+            transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        
+        .shutter-top {
+            transform-origin: top;
+        }
+        
+        .shutter-bottom {
+            transform-origin: bottom;
+        }
+        
+        .shutter-container.active .shutter {
+            transform: scaleY(1);
+        }
     </style>
 </head>
 <body>
@@ -164,15 +222,36 @@
         <div class="landing-content-floating">
             <h1 class="main-title floating-title">YLY Competition</h1>
             <div class="button-group">
-                <button id="startButton" class="magic-button">VIEW ALL RESULTS</button>
+                <button id="startButton" class="magic-button">SHOW MAGIC</button>
             </div>
         </div>
     </div>
 
+    <!-- Page transition effects -->
+    <div class="page-transition" id="pageTransition"></div>
+    <div class="shutter-container" id="shutterContainer">
+        <div class="shutter shutter-top"></div>
+        <div class="shutter shutter-bottom"></div>
+    </div>
+
     <script>
-        // Redirect to results page when VIEW ALL RESULTS is clicked
+        // Redirect to results page when SHOW MAGIC is clicked with animation
         document.getElementById('startButton').addEventListener('click', function() {
-            window.location.href = 'results.html';
+            const pageTransition = document.getElementById('pageTransition');
+            const shutterContainer = document.getElementById('shutterContainer');
+            
+            // Activate shutter effect
+            shutterContainer.classList.add('active');
+            
+            // After shutter closes partially, activate the circle transition
+            setTimeout(() => {
+                pageTransition.classList.add('active');
+                
+                // Redirect after animation completes
+                setTimeout(() => {
+                    window.location.href = 'results.html';
+                }, 1000);
+            }, 400);
         });
         
         // Add background music
