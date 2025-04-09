@@ -19,7 +19,6 @@
             padding: 0;
             font-family: 'Cinzel Decorative', cursive;
             background-color: #0a0c1c;
-            overflow-x: hidden;
         }
         
         /* Landing container styles */
@@ -60,9 +59,6 @@
             text-align: center;
             color: white;
             animation: float 6s ease-in-out infinite;
-            width: 90%;
-            max-width: 800px;
-            padding: 20px;
         }
         
         .main-title {
@@ -240,20 +236,16 @@
             opacity: 1;
         }
         
-        /* Responsive styles for mobile devices */
-        @media screen and (max-width: 768px) {
+        /* Responsive design for mobile devices */
+        @media (max-width: 768px) {
             .main-title {
                 font-size: 3.5rem;
                 margin-bottom: 1.5rem;
             }
             
             .magic-button {
-                padding: 12px 24px;
+                padding: 12px 25px;
                 font-size: 1.4rem;
-            }
-            
-            .owl-container {
-                top: 15px;
             }
             
             .owl {
@@ -263,22 +255,20 @@
             
             .message-banner {
                 font-size: 0.8rem;
-                padding: 4px 12px;
+                padding: 3px 10px;
                 bottom: -15px;
             }
             
             .magic-calling-text {
                 font-size: 3rem;
                 letter-spacing: 2px;
-                -webkit-text-stroke: 0.5px #1E3A8A;
             }
         }
         
-        /* Extra small devices */
-        @media screen and (max-width: 480px) {
+        @media (max-width: 480px) {
             .main-title {
-                font-size: 2.5rem;
-                margin-bottom: 1rem;
+                font-size: 2.8rem;
+                margin-bottom: 1.2rem;
             }
             
             .magic-button {
@@ -291,11 +281,684 @@
                 height: 60px;
             }
             
+            .message-banner {
+                font-size: 0.7rem;
+                padding: 2px 8px;
+                bottom: -12px;
+            }
+            
             .magic-calling-text {
-                font-size: 2rem;
-                white-space: normal;
-                width: 90%;
+                font-size: 2.2rem;
                 letter-spacing: 1px;
+            }
+        }
+        
+        /* For very small screens */
+        @media (max-width: 320px) {
+            .main-title {
+                font-size: 2.2rem;
+            }
+            
+            .magic-button {
+                padding: 8px 16px;
+                font-size: 1rem;
+            }
+            
+            .magic-calling-text {
+                font-size: 1.8rem;
+            }
+        }
+        
+        /* Sorting Hat Popup Styles */
+        .sorting-hat-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        
+        .sorting-hat-popup.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .popup-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3), 0 0 60px rgba(255, 215, 0, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            animation: popup-appear 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        @keyframes popup-appear {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 30px;
+            color: #e8d7b0;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background: rgba(255, 215, 0, 0.1);
+        }
+        
+        .close-button:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: rotate(90deg);
+        }
+        
+        /* Sorting Hat Styles */
+        .sorting-hat-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .sorting-hat {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+        
+        .hat-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            animation: hat-float 3s ease-in-out infinite;
+        }
+        
+        @keyframes hat-float {
+            0%, 100% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+        
+        .hat-thinking {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+        }
+        
+        .hat-thinking.active {
+            display: block;
+            animation: thinking-appear 0.5s ease-out;
+        }
+        
+        @keyframes thinking-appear {
+            0% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+            100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        
+        .thinking-dots {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .thinking-dots span {
+            width: 10px;
+            height: 10px;
+            background-color: #e8d7b0;
+            border-radius: 50%;
+            animation: thinking-dot 1.5s infinite ease-in-out;
+        }
+        
+        .thinking-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .thinking-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes thinking-dot {
+            0%, 100% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+        
+        .hat-message {
+            font-size: 1.8rem;
+            color: #e8d7b0;
+            text-align: center;
+            margin-top: 20px;
+            min-height: 60px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s, transform 0.5s;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        .hat-message.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Teams Container Styles */
+        .teams-container {
+            display: none;
+        }
+        
+        .teams-container.active {
+            display: block;
+            animation: teams-appear 0.8s ease-out;
+        }
+        
+        @keyframes teams-appear {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        .teams-title {
+            text-align: center;
+            color: #e8d7b0;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        
+        .houses-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .house-section {
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .gryffindor {
+            background: linear-gradient(135deg, rgba(116, 0, 1, 0.8) 0%, rgba(255, 215, 0, 0.2) 100%);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .hufflepuff {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.8) 0%, rgba(139, 69, 19, 0.2) 100%);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .ravenclaw {
+            background: linear-gradient(135deg, rgba(0, 26, 255, 0.8) 0%, rgba(205, 127, 50, 0.2) 100%);
+            border: 1px solid rgba(0, 26, 255, 0.3);
+        }
+        
+        .slytherin {
+            background: linear-gradient(135deg, rgba(0, 107, 0, 0.8) 0%, rgba(192, 192, 192, 0.2) 100%);
+            border: 1px solid rgba(0, 107, 0, 0.3);
+        }
+        
+        .house-title {
+            color: #e8d7b0;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .team-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .team-card {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .team-card h4 {
+            color: #e8d7b0;
+            font-size: 1.4rem;
+            margin: 0 0 10px 0;
+            text-align: center;
+        }
+        
+        .provinces {
+            font-size: 0.9rem;
+            color: rgba(232, 215, 176, 0.8);
+        }
+        
+        .provinces p {
+            margin: 5px 0;
+            padding-left: 10px;
+            border-left: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Responsive styles for the popup */
+        @media (max-width: 768px) {
+            .popup-content {
+                padding: 20px;
+                width: 95%;
+            }
+            
+            .sorting-hat {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .hat-message {
+                font-size: 1.5rem;
+            }
+            
+            .teams-title {
+                font-size: 2rem;
+            }
+            
+            .house-title {
+                font-size: 1.5rem;
+            }
+            
+            .team-card h4 {
+                font-size: 1.2rem;
+            }
+            
+            .close-button {
+                width: 36px;
+                height: 36px;
+                font-size: 24px;
+                top: 10px;
+                right: 10px;
+            }
+            
+            .thinking-dots span {
+                width: 8px;
+                height: 8px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .popup-content {
+                padding: 15px;
+                padding-top: 45px; /* Extra padding to prevent overlap with close button */
+                border-width: 1px;
+            }
+            
+            .sorting-hat {
+                width: 120px;
+                height: 120px;
+                margin-bottom: 15px;
+            }
+            
+            .hat-message {
+                font-size: 1.2rem;
+                min-height: 45px;
+            }
+            
+            .teams-title {
+                font-size: 1.8rem;
+                margin-bottom: 20px;
+            }
+            
+            .houses-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .house-section {
+                padding: 15px;
+            }
+            
+            .team-card {
+                padding: 12px;
+            }
+            
+            .team-card h4 {
+                font-size: 1.1rem;
+                margin-bottom: 8px;
+            }
+            
+            .provinces {
+                font-size: 0.8rem;
+            }
+            
+            .provinces p {
+                margin: 3px 0;
+                padding-left: 8px;
+            }
+            
+            .close-button {
+                width: 32px;
+                height: 32px;
+                font-size: 20px;
+                top: 8px;
+                right: 8px;
+            }
+            
+            .thinking-dots span {
+                width: 6px;
+                height: 6px;
+                gap: 4px;
+            }
+        }
+        
+        /* For very small screens */
+        @media (max-width: 320px) {
+            .popup-content {
+                padding: 12px;
+                padding-top: 40px;
+            }
+            
+            .sorting-hat {
+                width: 100px;
+                height: 100px;
+                margin-bottom: 10px;
+            }
+            
+            .hat-message {
+                font-size: 1rem;
+                min-height: 40px;
+                margin-top: 10px;
+            }
+            
+            .teams-title, .participants-title, .result-title {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+            }
+            
+            .house-title {
+                font-size: 1.2rem;
+                margin-bottom: 15px;
+            }
+            
+            .team-card h4 {
+                font-size: 1rem;
+            }
+            
+            .provinces {
+                font-size: 0.75rem;
+            }
+            
+            .close-button {
+                width: 28px;
+                height: 28px;
+                font-size: 18px;
+                top: 5px;
+                right: 5px;
+            }
+        }
+        
+        /* Participants List Styles */
+        .participants-container {
+            display: none;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .participants-container.active {
+            display: block;
+            animation: fade-in 0.8s ease-out;
+        }
+        
+        @keyframes fade-in {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        .participants-title {
+            text-align: center;
+            color: #e8d7b0;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        
+        .provinces-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+        
+        .province-item {
+            background: rgba(0, 0, 0, 0.5);
+            color: #e8d7b0;
+            padding: 15px;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            font-size: 1.2rem;
+        }
+        
+        .province-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 215, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        .province-item.selected {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: rgba(255, 215, 0, 0.8);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+        }
+        
+        /* Result Container Styles */
+        .result-container {
+            display: none;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .result-container.active {
+            display: block;
+            animation: result-appear 1s ease-out;
+        }
+        
+        @keyframes result-appear {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        
+        .result-content {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .result-title {
+            color: #e8d7b0;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        
+        .result-details {
+            margin: 30px 0;
+        }
+        
+        .result-house, .result-team {
+            color: #e8d7b0;
+            font-size: 1.8rem;
+            margin: 15px 0;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        .continue-button {
+            background: radial-gradient(ellipse at center, #4a4a5a 0%, #2a2a3a 100%);
+            color: #e8d7b0;
+            border: 2px solid #e8d7b0;
+            padding: 12px 25px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            border-radius: 30px;
+            font-family: 'Cinzel Decorative', cursive;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(232, 215, 176, 0.5);
+            margin-top: 20px;
+        }
+        
+        .continue-button:hover {
+            background: radial-gradient(ellipse at center, #5a5a6a 0%, #3a3a4a 100%);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(232, 215, 176, 0.6);
+        }
+        
+        /* Responsive styles for participants list */
+        @media (max-width: 768px) {
+            .provinces-list {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 10px;
+                padding: 15px;
+            }
+            
+            .province-item {
+                padding: 12px;
+                font-size: 1rem;
+            }
+            
+            .participants-title {
+                font-size: 2rem;
+            }
+            
+            .result-title {
+                font-size: 2rem;
+            }
+            
+            .result-house, .result-team {
+                font-size: 1.5rem;
+            }
+            
+            .result-content {
+                padding: 25px;
+                border-width: 1px;
+            }
+            
+            .continue-button {
+                padding: 10px 20px;
+                font-size: 1.3rem;
+                margin-top: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .provinces-list {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 8px;
+                padding: 10px;
+            }
+            
+            .province-item {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+            
+            .participants-title {
+                font-size: 1.8rem;
+                margin-bottom: 20px;
+            }
+            
+            .result-title {
+                font-size: 1.8rem;
+                margin-bottom: 15px;
+            }
+            
+            .result-house, .result-team {
+                font-size: 1.3rem;
+                margin: 10px 0;
+            }
+            
+            .result-details {
+                margin: 20px 0;
+            }
+            
+            .result-content {
+                padding: 20px;
+            }
+            
+            .continue-button {
+                padding: 8px 18px;
+                font-size: 1.2rem;
+                border-width: 1px;
+            }
+        }
+        
+        @media (max-width: 320px) {
+            .provinces-list {
+                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+                gap: 6px;
+                padding: 8px;
+            }
+            
+            .province-item {
+                padding: 8px;
+                font-size: 0.8rem;
+                border-radius: 8px;
+            }
+            
+            .participants-title {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+            }
+            
+            .result-title {
+                font-size: 1.5rem;
+                margin-bottom: 10px;
+            }
+            
+            .result-house, .result-team {
+                font-size: 1.1rem;
+                margin: 8px 0;
+            }
+            
+            .result-details {
+                margin: 15px 0;
+            }
+            
+            .result-content {
+                padding: 15px;
+                border-radius: 15px;
+            }
+            
+            .continue-button {
+                padding: 7px 15px;
+                font-size: 1rem;
+                border-radius: 20px;
+                margin-top: 10px;
             }
         }
     </style>
@@ -315,6 +978,180 @@
         </div>
     </div>
 
+    <!-- Sorting Hat Popup -->
+    <div class="sorting-hat-popup" id="sortingHatPopup">
+        <div class="popup-content">
+            <div class="close-button" id="closePopup">&times;</div>
+            <div class="sorting-hat-container">
+                <div class="sorting-hat" id="sortingHat">
+                    <img src="images/sorting-hat.png" alt="Sorting Hat" class="hat-image">
+                    <div class="hat-thinking" id="hatThinking">
+                        <div class="thinking-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hat-message" id="hatMessage"></div>
+            </div>
+            
+            <!-- Participants List -->
+            <div class="participants-container" id="participantsContainer">
+                <h2 class="participants-title">Choose Your Province</h2>
+                <div class="provinces-list">
+                    <div class="province-item" data-province="5G">5G</div>
+                    <div class="province-item" data-province="Fayoum">Fayoum</div>
+                    <div class="province-item" data-province="Minya">Minya</div>
+                    <div class="province-item" data-province="Aswan">Aswan</div>
+                    <div class="province-item" data-province="Qena">Qena</div>
+                    <div class="province-item" data-province="Port Said">Port Said</div>
+                    <div class="province-item" data-province="Alexandria">Alexandria</div>
+                    <div class="province-item" data-province="Kafr El-Sheikh">Kafr El-Sheikh</div>
+                    <div class="province-item" data-province="Giza">Giza</div>
+                    <div class="province-item" data-province="Luxor">Luxor</div>
+                    <div class="province-item" data-province="Capital">Capital</div>
+                    <div class="province-item" data-province="Matrouh">Matrouh</div>
+                    <div class="province-item" data-province="Beheira">Beheira</div>
+                    <div class="province-item" data-province="Sharkia">Sharkia</div>
+                    <div class="province-item" data-province="Beni Suef">Beni Suef</div>
+                    <div class="province-item" data-province="Ministry">Ministry</div>
+                    <div class="province-item" data-province="Qalyubia">Qalyubia</div>
+                    <div class="province-item" data-province="Cairo">Cairo</div>
+                    <div class="province-item" data-province="Red Sea">Red Sea</div>
+                    <div class="province-item" data-province="Wadi">Wadi</div>
+                    <div class="province-item" data-province="Gharbia">Gharbia</div>
+                    <div class="province-item" data-province="Suez">Suez</div>
+                    <div class="province-item" data-province="South Sinai">South Sinai</div>
+                    <div class="province-item" data-province="Menoufia">Menoufia</div>
+                    <div class="province-item" data-province="Assiut">Assiut</div>
+                    <div class="province-item" data-province="Sohag">Sohag</div>
+                    <div class="province-item" data-province="Damietta">Damietta</div>
+                    <div class="province-item" data-province="Ismailia">Ismailia</div>
+                    <div class="province-item" data-province="Dakahlia">Dakahlia</div>
+                    <div class="province-item" data-province="North Sinai">North Sinai</div>
+                </div>
+            </div>
+            
+            <!-- Teams Container (initially hidden) -->
+            <div class="teams-container" id="teamsContainer">
+                <h2 class="teams-title">Choose Your Team</h2>
+                <div class="houses-container">
+                    <!-- Gryffindor -->
+                    <div class="house-section gryffindor">
+                        <h3 class="house-title">Gryffindor 🦁</h3>
+                        <div class="team-cards">
+                            <div class="team-card" data-house="Gryffindor" data-team="TikTok">
+                                <h4>TikTok</h4>
+                                <div class="provinces">
+                                    <p>1. 5G</p>
+                                    <p>2. Fayoum</p>
+                                    <p>3. Minya</p>
+                                    <p>4. Aswan</p>
+                                </div>
+                            </div>
+                            <div class="team-card" data-house="Gryffindor" data-team="Reel">
+                                <h4>Reel</h4>
+                                <div class="provinces">
+                                    <p>1. Qena</p>
+                                    <p>2. Port Said</p>
+                                    <p>3. Alexandria</p>
+                                    <p>4. Kafr El-Sheikh</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Hufflepuff -->
+                    <div class="house-section hufflepuff">
+                        <h3 class="house-title">Hufflepuff 🦡</h3>
+                        <div class="team-cards">
+                            <div class="team-card" data-house="Hufflepuff" data-team="Karaoke">
+                                <h4>Karaoke</h4>
+                                <div class="provinces">
+                                    <p>1. Giza</p>
+                                    <p>2. Luxor</p>
+                                    <p>3. Capital</p>
+                                </div>
+                            </div>
+                            <div class="team-card" data-house="Hufflepuff" data-team="Dubbing">
+                                <h4>Dubbing</h4>
+                                <div class="provinces">
+                                    <p>1. Matrouh</p>
+                                    <p>2. Beheira</p>
+                                    <p>3. Sharkia</p>
+                                    <p>4. Beni Suef</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Ravenclaw -->
+                    <div class="house-section ravenclaw">
+                        <h3 class="house-title">Ravenclaw 🦅</h3>
+                        <div class="team-cards">
+                            <div class="team-card" data-house="Ravenclaw" data-team="Content Creator">
+                                <h4>Content Creator</h4>
+                                <div class="provinces">
+                                    <p>1. Ministry</p>
+                                    <p>2. Qalyubia</p>
+                                    <p>3. Cairo</p>
+                                    <p>4. Red Sea</p>
+                                </div>
+                            </div>
+                            <div class="team-card" data-house="Ravenclaw" data-team="Design">
+                                <h4>Design</h4>
+                                <div class="provinces">
+                                    <p>1. Menoufia</p>
+                                    <p>2. Assiut</p>
+                                    <p>3. Sohag</p>
+                                    <p>4. Giza</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Slytherin -->
+                    <div class="house-section slytherin">
+                        <h3 class="house-title">Slytherin 🐍</h3>
+                        <div class="team-cards">
+                            <div class="team-card" data-house="Slytherin" data-team="Advertisements">
+                                <h4>Advertisements</h4>
+                                <div class="provinces">
+                                    <p>1. Wadi</p>
+                                    <p>2. Gharbia</p>
+                                    <p>3. Suez</p>
+                                    <p>4. South Sinai</p>
+                                </div>
+                            </div>
+                            <div class="team-card" data-house="Slytherin" data-team="Mini Movie">
+                                <h4>Mini Movie</h4>
+                                <div class="provinces">
+                                    <p>1. Damietta</p>
+                                    <p>2. Ismailia</p>
+                                    <p>3. Dakahlia</p>
+                                    <p>4. North Sinai</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Result Container (initially hidden) -->
+            <div class="result-container" id="resultContainer">
+                <div class="result-content">
+                    <h2 class="result-title" id="resultTitle"></h2>
+                    <div class="result-details">
+                        <p class="result-house" id="resultHouse"></p>
+                        <p class="result-team" id="resultTeam"></p>
+                    </div>
+                    <button id="continueButton" class="continue-button">Continue to Results</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Page transition effects -->
     <div class="page-transition" id="pageTransition"></div>
     <div class="shutter-container" id="shutterContainer">
@@ -324,29 +1161,166 @@
     <div class="magic-calling-text" id="magicCallingText">MAGIC IS CALLING</div>
 
     <script>
+        // Province to team mapping
+        const provinceToTeam = {
+            // Gryffindor - TikTok
+            "5G": { house: "Gryffindor", team: "TikTok", audio: "audio/house audio/Gryffindor.mp3" },
+            "Fayoum": { house: "Gryffindor", team: "TikTok", audio: "audio/house audio/Gryffindor.mp3" },
+            "Minya": { house: "Gryffindor", team: "TikTok", audio: "audio/house audio/Gryffindor.mp3" },
+            "Aswan": { house: "Gryffindor", team: "TikTok", audio: "audio/house audio/Gryffindor.mp3" },
+            
+            // Gryffindor - Reel
+            "Qena": { house: "Gryffindor", team: "Reel", audio: "audio/house audio/Gryffindor.mp3" },
+            "Port Said": { house: "Gryffindor", team: "Reel", audio: "audio/house audio/Gryffindor.mp3" },
+            "Alexandria": { house: "Gryffindor", team: "Reel", audio: "audio/house audio/Gryffindor.mp3" },
+            "Kafr El-Sheikh": { house: "Gryffindor", team: "Reel", audio: "audio/house audio/Gryffindor.mp3" },
+            
+            // Hufflepuff - Karaoke
+            "Giza": { house: "Hufflepuff", team: "Karaoke", audio: "audio/house audio/Hufflepuff.mp3" },
+            "Luxor": { house: "Hufflepuff", team: "Karaoke", audio: "audio/house audio/Hufflepuff.mp3" },
+            "Capital": { house: "Hufflepuff", team: "Karaoke", audio: "audio/house audio/Hufflepuff.mp3" },
+            
+            // Hufflepuff - Dubbing
+            "Matrouh": { house: "Hufflepuff", team: "Dubbing", audio: "audio/house audio/Hufflepuff.mp3" },
+            "Beheira": { house: "Hufflepuff", team: "Dubbing", audio: "audio/house audio/Hufflepuff.mp3" },
+            "Sharkia": { house: "Hufflepuff", team: "Dubbing", audio: "audio/house audio/Hufflepuff.mp3" },
+            "Beni Suef": { house: "Hufflepuff", team: "Dubbing", audio: "audio/house audio/Hufflepuff.mp3" },
+            
+            // Ravenclaw - Content Creator
+            "Ministry": { house: "Ravenclaw", team: "Content Creator", audio: "audio/house audio/Ravenclaw.mp3" },
+            "Qalyubia": { house: "Ravenclaw", team: "Content Creator", audio: "audio/house audio/Ravenclaw.mp3" },
+            "Cairo": { house: "Ravenclaw", team: "Content Creator", audio: "audio/house audio/Ravenclaw.mp3" },
+            "Red Sea": { house: "Ravenclaw", team: "Content Creator", audio: "audio/house audio/Ravenclaw.mp3" },
+            
+            // Ravenclaw - Design
+            "Menoufia": { house: "Ravenclaw", team: "Design", audio: "audio/house audio/Ravenclaw.mp3" },
+            "Assiut": { house: "Ravenclaw", team: "Design", audio: "audio/house audio/Ravenclaw.mp3" },
+            "Sohag": { house: "Ravenclaw", team: "Design", audio: "audio/house audio/Ravenclaw.mp3" },
+            
+            // Slytherin - Advertisements
+            "Wadi": { house: "Slytherin", team: "Advertisements", audio: "audio/house audio/Slytherin.mp3" },
+            "Gharbia": { house: "Slytherin", team: "Advertisements", audio: "audio/house audio/Slytherin.mp3" },
+            "Suez": { house: "Slytherin", team: "Advertisements", audio: "audio/house audio/Slytherin.mp3" },
+            "South Sinai": { house: "Slytherin", team: "Advertisements", audio: "audio/house audio/Slytherin.mp3" },
+            
+            // Slytherin - Mini Movie
+            "Damietta": { house: "Slytherin", team: "Mini Movie", audio: "audio/house audio/Slytherin.mp3" },
+            "Ismailia": { house: "Slytherin", team: "Mini Movie", audio: "audio/house audio/Slytherin.mp3" },
+            "Dakahlia": { house: "Slytherin", team: "Mini Movie", audio: "audio/house audio/Slytherin.mp3" },
+            "North Sinai": { house: "Slytherin", team: "Mini Movie", audio: "audio/house audio/Slytherin.mp3" }
+        };
+        
         // Redirect to results page when SHOW MAGIC is clicked with animation
         document.getElementById('startButton').addEventListener('click', function() {
+            // Show the sorting hat popup instead of redirecting
+            const sortingHatPopup = document.getElementById('sortingHatPopup');
+            sortingHatPopup.classList.add('active');
+            
+            // Play sorting hat sound
+            const sortingHatSound = new Audio('audio/sorting-hat.mp3');
+            sortingHatSound.volume = 0.5;
+            sortingHatSound.play().catch(e => console.log('Audio play failed:', e));
+            
+            // Show thinking animation after a short delay
+            setTimeout(() => {
+                const hatThinking = document.getElementById('hatThinking');
+                hatThinking.classList.add('active');
+                
+                // After thinking, show the participants list
+                setTimeout(() => {
+                    hatThinking.classList.remove('active');
+                    const participantsContainer = document.getElementById('participantsContainer');
+                    participantsContainer.classList.add('active');
+                }, 2000);
+            }, 500);
+        });
+        
+        // Close popup when close button is clicked
+        document.getElementById('closePopup').addEventListener('click', function() {
+            const sortingHatPopup = document.getElementById('sortingHatPopup');
+            sortingHatPopup.classList.remove('active');
+        });
+        
+        // Handle province selection
+        const provinceItems = document.querySelectorAll('.province-item');
+        provinceItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const province = this.getAttribute('data-province');
+                const teamInfo = provinceToTeam[province];
+                
+                if (teamInfo) {
+                    // Remove selected class from all provinces
+                    provinceItems.forEach(p => p.classList.remove('selected'));
+                    
+                    // Add selected class to clicked province
+                    this.classList.add('selected');
+                    
+                    // Hide participants container
+                    document.getElementById('participantsContainer').classList.remove('active');
+                    
+                    // Show hat thinking animation
+                    const hatThinking = document.getElementById('hatThinking');
+                    hatThinking.classList.add('active');
+                    
+                    // Play house audio
+                    const houseAudio = new Audio(teamInfo.audio);
+                    houseAudio.volume = 0.5;
+                    houseAudio.play().catch(e => console.log('Audio play failed:', e));
+                    
+                    // After thinking, show the result
+                    setTimeout(() => {
+                        hatThinking.classList.remove('active');
+                        
+                        // Show result container
+                        const resultContainer = document.getElementById('resultContainer');
+                        resultContainer.classList.add('active');
+                        
+                        // Update result content
+                        document.getElementById('resultTitle').textContent = `Welcome, ${province}!`;
+                        document.getElementById('resultHouse').textContent = `${teamInfo.house} House`;
+                        document.getElementById('resultTeam').textContent = `${teamInfo.team} Team`;
+                        
+                        // Show hat message
+                        const hatMessage = document.getElementById('hatMessage');
+                        hatMessage.textContent = `You belong to the ${teamInfo.team} team, welcome to ${teamInfo.house} House!`;
+                        hatMessage.classList.add('active');
+                    }, 2000);
+                }
+            });
+        });
+        
+        // Handle continue button click
+        document.getElementById('continueButton').addEventListener('click', function() {
+            // Get page transition elements
             const pageTransition = document.getElementById('pageTransition');
             const shutterContainer = document.getElementById('shutterContainer');
             const magicCallingText = document.getElementById('magicCallingText');
             
-            // Activate shutter effect
-            shutterContainer.classList.add('active');
+            // Hide the popup content with fade-out
+            document.querySelector('.popup-content').style.opacity = '0';
+            document.querySelector('.popup-content').style.transition = 'opacity 0.5s ease';
             
-            // Show "MAGIC IS CALLING" text as shutters close
+            // After popup content fades out, begin transition animations
             setTimeout(() => {
-                magicCallingText.classList.add('active');
-            }, 200);
-            
-            // After shutter closes partially, activate the circle transition
-            setTimeout(() => {
-                pageTransition.classList.add('active');
+                // Activate shutter effect
+                shutterContainer.classList.add('active');
                 
-                // Redirect after animation completes
+                // Show "THE MAGIC IS CALLING" text as shutters close
                 setTimeout(() => {
-                    window.location.href = 'results.html';
-                }, 1000);
-            }, 400);
+                    magicCallingText.textContent = "THE MAGIC IS CALLING";
+                    magicCallingText.classList.add('active');
+                }, 200);
+                
+                // After shutter closes partially, activate the circle transition
+                setTimeout(() => {
+                    pageTransition.classList.add('active');
+                    
+                    // Redirect after animation completes
+                    setTimeout(() => {
+                        window.location.href = 'results.html';
+                    }, 1000);
+                }, 400);
+            }, 300);
         });
         
         // Add background music
