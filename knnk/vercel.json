@@ -1,44 +1,39 @@
 {
   "redirects": [
     {
-      "source": "/",
-      "destination": "/coming-soon.html",
-      "permanent": true
-    },
-    {
-      "source": "/index",
-      "destination": "/coming-soon.html",
-      "permanent": true
-    },
-    {
-      "source": "/index.html",
-      "destination": "/coming-soon.html",
-      "permanent": true
-    },
-    {
       "source": "/gateway.html",
-      "destination": "/coming-soon.html",
+      "destination": "/index.html",
       "permanent": true
     },
     {
       "source": "/main.html",
-      "destination": "/coming-soon.html",
+      "destination": "/index.html",
       "permanent": true
     },
     {
       "source": "/join-now.html",
-      "destination": "/coming-soon.html",
+      "destination": "/index.html",
       "permanent": true
     },
     {
-      "source": "/((?!coming-soon.html|about.html|styles.css|script.js|images/|audio/).*)",
-      "destination": "/coming-soon.html",
+      "source": "/coming-soon.html",
+      "destination": "/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/about.html",
+      "destination": "/index.html",
+      "permanent": true
+    },
+    {
+      "source": "/((?!index.html|results.html|styles.css|script.js|images/|audio/).*)",
+      "destination": "/index.html",
       "permanent": false
     }
   ],
   "headers": [
     {
-      "source": "/((?!coming-soon.html|about.html|styles.css|script.js|images/|audio/).*)",
+      "source": "/((?!index.html|results.html|styles.css|script.js|images/|audio/).*)",
       "headers": [
         {
           "key": "X-Robots-Tag",
