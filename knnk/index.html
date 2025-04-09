@@ -210,6 +210,31 @@
         .shutter-container.active .shutter {
             transform: scaleY(1);
         }
+        
+        /* Magic text that appears during transition */
+        .magic-calling-text {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 5rem;
+            color: #4169E1; /* Royal blue color */
+            text-shadow: 0 0 30px rgba(65, 105, 225, 0.9), 0 0 50px rgba(65, 105, 225, 0.5);
+            z-index: 1000;
+            opacity: 0;
+            transition: transform 0.8s ease, opacity 0.8s ease;
+            text-align: center;
+            white-space: nowrap;
+            letter-spacing: 4px;
+            font-weight: 900;
+            -webkit-text-stroke: 1px #1E3A8A;
+        }
+        
+        .magic-calling-text.active {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -233,15 +258,22 @@
         <div class="shutter shutter-top"></div>
         <div class="shutter shutter-bottom"></div>
     </div>
+    <div class="magic-calling-text" id="magicCallingText">MAGIC IS CALLING</div>
 
     <script>
         // Redirect to results page when SHOW MAGIC is clicked with animation
         document.getElementById('startButton').addEventListener('click', function() {
             const pageTransition = document.getElementById('pageTransition');
             const shutterContainer = document.getElementById('shutterContainer');
+            const magicCallingText = document.getElementById('magicCallingText');
             
             // Activate shutter effect
             shutterContainer.classList.add('active');
+            
+            // Show "MAGIC IS CALLING" text as shutters close
+            setTimeout(() => {
+                magicCallingText.classList.add('active');
+            }, 200);
             
             // After shutter closes partially, activate the circle transition
             setTimeout(() => {
