@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YLY Competition - All Results</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('images/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Cinzel Decorative', cursive;
+            color: #e8d7b0;
+            overflow-x: hidden;
+        }
+        
+        .results-container {
+            min-height: 100vh;
+            background: rgba(10, 12, 28, 0.9);
+            padding: 2rem;
+        }
+        
+        .results-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #e8d7b0;
+            text-shadow: 0 0 10px rgba(232, 215, 176, 0.6);
+            font-size: 2.8rem;
+        }
+        
+        .all-results {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: rgba(20, 22, 44, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(232, 215, 176, 0.3);
+            border: 1px solid rgba(232, 215, 176, 0.2);
+        }
+        
+        .house-section {
+            margin-bottom: 2.5rem;
+            border-bottom: 1px dashed rgba(232, 215, 176, 0.3);
+            padding-bottom: 1.5rem;
+        }
+        
+        .house-title {
+            color: #e8d7b0;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            text-shadow: 0 0 8px rgba(232, 215, 176, 0.5);
+        }
+        
+        .house-icon {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .categories-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .category-card {
+            flex: 1;
+            min-width: 220px;
+            max-width: 300px;
+            background: rgba(30, 33, 58, 0.7);
+            border: 2px solid rgba(232, 215, 176, 0.3);
+            border-radius: 10px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: rgba(232, 215, 176, 0.6);
+        }
+        
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(232, 215, 176, 0.1) 0%, transparent 70%);
+            transform: rotate(45deg);
+            z-index: 0;
+        }
+        
+        .category-title {
+            color: #e8d7b0;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            text-shadow: 0 0 5px rgba(232, 215, 176, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .category-icon {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Modal for displaying team members */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .modal-container {
+            background: rgba(20, 22, 44, 0.9);
+            max-width: 800px;
+            width: 90%;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(232, 215, 176, 0.5);
+            border: 2px solid rgba(232, 215, 176, 0.3);
+            padding: 2rem;
+            position: relative;
+            transform: scale(0.8);
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+        
+        .modal-container.active {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(232, 215, 176, 0.3);
+            padding-bottom: 1rem;
+        }
+        
+        .modal-title {
+            font-size: 2rem;
+            color: #e8d7b0;
+            text-shadow: 0 0 10px rgba(232, 215, 176, 0.6);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .modal-title-icon {
+            font-size: 2rem;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #e8d7b0;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .modal-close:hover {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+        
+        .team-members-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+        
+        .team-member {
+            background: rgba(40, 45, 79, 0.8);
+            border-radius: 10px;
+            padding: 1.2rem;
+            width: calc(50% - 0.75rem);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s forwards;
+            border-left: 4px solid gold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+        }
+        
+        .member-icon {
+            font-size: 1.8rem;
+            margin-right: 1rem;
+            color: gold;
+        }
+        
+        .member-name {
+            font-size: 1.3rem;
+            color: #fff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        
+        .team-info {
+            width: 100%;
+            text-align: center;
+            margin-top: 2rem;
+            font-style: italic;
+            color: rgba(232, 215, 176, 0.8);
+            opacity: 0;
+            animation: fadeIn 1s 0.8s forwards;
+        }
+        
+        .modal-footer {
+            margin-top: 2rem;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 1s 1s forwards;
+        }
+        
+        .gryffindor {
+            background: linear-gradient(135deg, rgba(174, 0, 1, 0.7), rgba(238, 186, 48, 0.3));
+        }
+        
+        .gryffindor .team-member {
+            border-left-color: #D3A625;
+        }
+        
+        .hufflepuff {
+            background: linear-gradient(135deg, rgba(240, 199, 94, 0.7), rgba(66, 66, 66, 0.3));
+        }
+        
+        .hufflepuff .team-member {
+            border-left-color: #ECB939;
+        }
+        
+        .ravenclaw {
+            background: linear-gradient(135deg, rgba(34, 47, 91, 0.7), rgba(148, 107, 45, 0.3));
+        }
+        
+        .ravenclaw .team-member {
+            border-left-color: #946B2D;
+        }
+        
+        .slytherin {
+            background: linear-gradient(135deg, rgba(42, 98, 61, 0.7), rgba(170, 170, 170, 0.3));
+        }
+        
+        .slytherin .team-member {
+            border-left-color: #5D5D5D;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .back-button {
+            display: block;
+            margin: 2rem auto;
+            background: #1e213a;
+            color: #e8d7b0;
+            border: 2px solid #e8d7b0;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border-radius: 30px;
+            font-family: 'Cinzel Decorative', cursive;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(232, 215, 176, 0.5), 0 0 20px rgba(232, 215, 176, 0.3);
+            z-index: 2;
+        }
+        
+        .back-button:hover {
+            background: #282d4f;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(232, 215, 176, 0.6), 0 0 25px rgba(232, 215, 176, 0.4);
+        }
+        
+        .back-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(232, 215, 176, 0.4), transparent);
+            transition: 0.5s;
+        }
+        
+        .back-button:hover:before {
+            left: 100%;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .team-member {
+                width: 100%;
+            }
+            
+            .house-title {
+                font-size: 1.8rem;
+            }
+            
+            .category-title {
+                font-size: 1.3rem;
+            }
+            
+            .modal-title {
+                font-size: 1.6rem;
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            .categories-container {
+                flex-direction: column;
+            }
+            
+            .category-card {
+                max-width: 100%;
+            }
+            
+            .all-results {
+                padding: 1rem;
+            }
+            
+            .results-title {
+                font-size: 2.2rem;
+            }
+            
+            .house-title {
+                font-size: 1.5rem;
+            }
+        }
+        
+        .member-icons {
+            font-size: 1.5rem;
+            display: inline-block;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+        
+        .sparkle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 10px 2px rgba(255, 215, 0, 0.7);
+            pointer-events: none;
+            z-index: 2;
+            animation: sparkleAnim 1.5s linear forwards;
+        }
+        
+        @keyframes sparkleAnim {
+            0% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            20% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            80% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+        }
+    </style>
+</head>
+<body class="use-local-bg">
+    <div class="results-container">
+        <h1 class="results-title">YLY Competition - All Results</h1>
+        
+        <div class="all-results">
+            <!-- Gryffindor House -->
+            <div class="house-section">
+                <h2 class="house-title">Gryffindor House</h2>
+                <div class="house-icon">🦁</div>
+                
+                <div class="categories-container">
+                    <!-- TikTok -->
+                    <div class="category-card gryffindor" data-category="tiktok">
+                        <div class="category-icon">📱</div>
+                        <h3 class="category-title">TikTok</h3>
+                    </div>
+                    
+                    <!-- Film -->
+                    <div class="category-card gryffindor" data-category="film">
+                        <div class="category-icon">🎬</div>
+                        <h3 class="category-title">Film</h3>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hufflepuff House -->
+            <div class="house-section">
+                <h2 class="house-title">Hufflepuff House</h2>
+                <div class="house-icon">🦡</div>
+                
+                <div class="categories-container">
+                    <!-- Content Creator -->
+                    <div class="category-card hufflepuff" data-category="contentcreator">
+                        <div class="category-icon">📹</div>
+                        <h3 class="category-title">Content Creator</h3>
+                    </div>
+                    
+                    <!-- Singing -->
+                    <div class="category-card hufflepuff" data-category="singing">
+                        <div class="category-icon">🎤</div>
+                        <h3 class="category-title">Singing</h3>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ravenclaw House -->
+            <div class="house-section">
+                <h2 class="house-title">Ravenclaw House</h2>
+                <div class="house-icon">🦅</div>
+                
+                <div class="categories-container">
+                    <!-- Dubbing -->
+                    <div class="category-card ravenclaw" data-category="dubbing">
+                        <div class="category-icon">🎭</div>
+                        <h3 class="category-title">Dubbing</h3>
+                    </div>
+                    
+                    <!-- Design -->
+                    <div class="category-card ravenclaw" data-category="design">
+                        <div class="category-icon">🎨</div>
+                        <h3 class="category-title">Design</h3>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slytherin House -->
+            <div class="house-section">
+                <h2 class="house-title">Slytherin House</h2>
+                <div class="house-icon">🐍</div>
+                
+                <div class="categories-container">
+                    <!-- Ads -->
+                    <div class="category-card slytherin" data-category="ads">
+                        <div class="category-icon">📢</div>
+                        <h3 class="category-title">Ads</h3>
+                    </div>
+                    
+                    <!-- Reel -->
+                    <div class="category-card slytherin" data-category="reel">
+                        <div class="category-icon">🎞️</div>
+                        <h3 class="category-title">Reel</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal for displaying team members -->
+        <div class="modal-overlay" id="teamModal">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3 class="modal-title">
+                        <span class="modal-title-icon"></span>
+                        <span class="modal-title-text"></span>
+                    </h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="team-members-container" id="teamMembersContainer">
+                    <!-- Team members will be added here dynamically -->
+                </div>
+                <div class="team-info" id="teamInfo">
+                    <!-- Team info will be added here dynamically -->
+                </div>
+                <div class="modal-footer">
+                    <button class="back-button modal-close-btn">Close</button>
+                </div>
+            </div>
+        </div>
+        
+        <button class="back-button" id="backToHomeButton">Back to Home</button>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click event for back button
+            document.getElementById('backToHomeButton').addEventListener('click', function() {
+                window.location.href = 'index.html';
+            });
+            
+            // Get actual results from localStorage instead of using predefined teams
+            let resultsData = {};
+            try {
+                const savedResults = localStorage.getItem('ylySavedResults');
+                if (savedResults) {
+                    resultsData = JSON.parse(savedResults);
+                }
+            } catch (error) {
+                console.error('Error loading results:', error);
+            }
+            
+            // Set up category card click events
+            const categoryCards = document.querySelectorAll('.category-card');
+            const modal = document.getElementById('teamModal');
+            const modalContainer = modal.querySelector('.modal-container');
+            const modalTitle = modal.querySelector('.modal-title-text');
+            const modalTitleIcon = modal.querySelector('.modal-title-icon');
+            const teamMembersContainer = document.getElementById('teamMembersContainer');
+            const teamInfo = document.getElementById('teamInfo');
+            
+            // Define icons for team members based on their positions in team
+            const memberIcons = ['👑', '🧙', '⚔️', '🔮'];
+            
+            // Category icons
+            const categoryIcons = {
+                'tiktok': '📱',
+                'film': '🎬',
+                'contentcreator': '📹',
+                'singing': '🎤',
+                'dubbing': '🎭',
+                'design': '🎨',
+                'ads': '📢',
+                'reel': '🎞️'
+            };
+            
+            // House classes for styling
+            const houseClasses = {
+                'tiktok': 'gryffindor',
+                'film': 'gryffindor',
+                'contentcreator': 'hufflepuff',
+                'singing': 'hufflepuff',
+                'dubbing': 'ravenclaw',
+                'design': 'ravenclaw',
+                'ads': 'slytherin',
+                'reel': 'slytherin'
+            };
+            
+            // Set up click event for all category cards
+            categoryCards.forEach(card => {
+                const category = card.getAttribute('data-category');
+                
+                // Add sparkle effect on hover
+                card.addEventListener('mousemove', createSparkleEffect);
+                
+                card.addEventListener('click', function() {
+                    // Get team members for this category
+                    const teamMembers = resultsData[category] || [];
+                    
+                    if (teamMembers.length === 0) {
+                        // If no results, show message
+                        showModal(category, 'No teams drawn yet for this category');
+                    } else {
+                        // Show the team members
+                        showTeamModal(category, teamMembers);
+                    }
+                });
+            });
+            
+            // Create sparkle effect on card hover
+            function createSparkleEffect(e) {
+                const card = e.currentTarget;
+                const cardRect = card.getBoundingClientRect();
+                const x = e.clientX - cardRect.left;
+                const y = e.clientY - cardRect.top;
+                
+                // Create sparkle element
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = x + 'px';
+                sparkle.style.top = y + 'px';
+                
+                // Random color
+                const colors = ['#ffdf85', '#ffc0cb', '#87cefa', '#98fb98'];
+                sparkle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Append to card
+                card.appendChild(sparkle);
+                
+                // Remove after animation completes
+                setTimeout(() => {
+                    if (sparkle.parentNode === card) {
+                        card.removeChild(sparkle);
+                    }
+                }, 1500);
+            }
+            
+            // Show the modal with team members
+            function showTeamModal(category, teamMembers) {
+                // Reset container
+                teamMembersContainer.innerHTML = '';
+                
+                // Set title
+                modalTitle.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+                modalTitleIcon.textContent = categoryIcons[category] || '🏆';
+                
+                // Remove any existing house classes
+                modalContainer.classList.remove('gryffindor', 'hufflepuff', 'ravenclaw', 'slytherin');
+                
+                // Add house class
+                modalContainer.classList.add(houseClasses[category]);
+                
+                // Add delay for staggered animation
+                let delay = 0.2;
+                
+                // Add team members
+                teamMembers.forEach((member, index) => {
+                    const memberDiv = document.createElement('div');
+                    memberDiv.className = 'team-member';
+                    memberDiv.style.animationDelay = `${delay}s`;
+                    
+                    const memberIcon = document.createElement('div');
+                    memberIcon.className = 'member-icon';
+                    memberIcon.textContent = memberIcons[index % memberIcons.length];
+                    
+                    const memberName = document.createElement('div');
+                    memberName.className = 'member-name';
+                    memberName.textContent = member;
+                    
+                    // Add position number 
+                    const positionSpan = document.createElement('span');
+                    positionSpan.style.fontSize = '0.9em';
+                    positionSpan.style.opacity = '0.8';
+                    positionSpan.style.marginRight = '5px';
+                    positionSpan.textContent = `${index + 1}ـ `;
+                    
+                    memberName.prepend(positionSpan);
+                    
+                    memberDiv.appendChild(memberIcon);
+                    memberDiv.appendChild(memberName);
+                    teamMembersContainer.appendChild(memberDiv);
+                    
+                    delay += 0.1;
+                });
+                
+                // Add team info
+                teamInfo.textContent = `Team Size: ${teamMembers.length} members`;
+                
+                // Show modal with animation
+                modal.classList.add('active');
+                setTimeout(() => {
+                    modalContainer.classList.add('active');
+                }, 10);
+            }
+            
+            // Show modal with custom message
+            function showModal(category, message) {
+                // Reset container
+                teamMembersContainer.innerHTML = '';
+                
+                // Set title
+                modalTitle.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+                modalTitleIcon.textContent = categoryIcons[category] || '🏆';
+                
+                // Remove any existing house classes
+                modalContainer.classList.remove('gryffindor', 'hufflepuff', 'ravenclaw', 'slytherin');
+                
+                // Add house class
+                modalContainer.classList.add(houseClasses[category]);
+                
+                // Create message element
+                const messageDiv = document.createElement('div');
+                messageDiv.style.textAlign = 'center';
+                messageDiv.style.padding = '2rem';
+                messageDiv.style.fontSize = '1.5rem';
+                messageDiv.style.color = '#e8d7b0';
+                messageDiv.innerHTML = message;
+                
+                teamMembersContainer.appendChild(messageDiv);
+                
+                // Hide team info
+                teamInfo.textContent = '';
+                
+                // Show modal with animation
+                modal.classList.add('active');
+                setTimeout(() => {
+                    modalContainer.classList.add('active');
+                }, 10);
+            }
+            
+            // Close modal buttons
+            const closeButtons = document.querySelectorAll('.modal-close, .modal-close-btn');
+            closeButtons.forEach(button => {
+                button.addEventListener('click', closeModal);
+            });
+            
+            // Close on background click
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            // Close modal function
+            function closeModal() {
+                modalContainer.classList.remove('active');
+                setTimeout(() => {
+                    modal.classList.remove('active');
+                }, 500);
+            }
+            
+            // Add audio background music
+            var audioPlayer = document.createElement('audio');
+            audioPlayer.id = 'audioPlayer';
+            audioPlayer.loop = true;
+            audioPlayer.volume = 0.3;
+            audioPlayer.src = 'audio/the-mischievous-wizard-311524.mp3';
+            document.body.appendChild(audioPlayer);
+            
+            // Play audio on user interaction
+            document.addEventListener('click', function playAudio() {
+                if (audioPlayer) {
+                    audioPlayer.play().catch(function(error) {
+                        console.log('Audio autoplay was prevented');
+                    });
+                    document.removeEventListener('click', playAudio);
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

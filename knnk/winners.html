@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YLY Competition - Winners</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        .winners-container {
+            min-height: 100vh;
+            background: rgba(10, 12, 28, 0.9);
+            padding: 2rem;
+            position: relative;
+        }
+
+        .winners-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('images/backgrounds/lottery/magic-book.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            opacity: 0.2;
+            z-index: -1;
+        }
+
+        .winners-title {
+            text-align: center;
+            color: #e8d7b0;
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 15px rgba(232, 215, 176, 0.6);
+            font-family: 'Cinzel Decorative', cursive;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .houses-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 50px;
+            perspective: 1000px;
+        }
+
+        .house-card {
+            position: relative;
+            width: 280px;
+            height: 400px;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            border-radius: 20px;
+            overflow: visible;
+            transition: transform 0.3s ease-in-out;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .house-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .house-door {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-origin: left;
+            transform-style: preserve-3d;
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 20px;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .house-card.door-open .house-door {
+            transform: rotateY(-95deg);
+        }
+
+        .door-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.5);
+            border: 8px solid;
+            display: flex;
+            align-items: flex-end;
+            padding-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        .door-handle {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            width: 14px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(255, 215, 0, 0.7);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+            z-index: 2;
+        }
+
+        .house-name-plate {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            text-align: center;
+            border-top: 2px solid rgba(255, 255, 255, 0.3);
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+        }
+
+        .door-frame {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            z-index: 5;
+            border: 12px solid;
+            box-sizing: border-box;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        .doorway {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: black;
+        }
+
+        /* House-specific styles */
+        .gryffindor .door-front {
+            background-image: url('images/houses/1.png');
+            border-color: #740001;
+        }
+
+        .gryffindor .door-frame {
+            border-color: #D3A625;
+            background: rgba(116, 0, 1, 0.6);
+        }
+
+        .hufflepuff .door-front {
+            background-image: url('images/houses/2.png');
+            border-color: #ECB939;
+        }
+
+        .hufflepuff .door-frame {
+            border-color: #60605C;
+            background: rgba(236, 185, 57, 0.3);
+        }
+
+        .ravenclaw .door-front {
+            background-image: url('images/houses/3.png');
+            border-color: #0E1A40;
+        }
+
+        .ravenclaw .door-frame {
+            border-color: #946B2D;
+            background: rgba(14, 26, 64, 0.3);
+        }
+
+        .slytherin .door-front {
+            background-image: url('images/houses/4.png');
+            border-color: #1A472A;
+        }
+
+        .slytherin .door-frame {
+            border-color: #5D5D5D;
+            background: rgba(26, 71, 42, 0.6);
+        }
+
+        .categories-grid {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .categories-grid.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .category-card {
+            background: rgba(30, 33, 58, 0.7);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(232, 215, 176, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .category-card:hover::before {
+            opacity: 1;
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-name {
+            color: #e8d7b0;
+            font-size: 1.5rem;
+            font-family: 'Cinzel Decorative', cursive;
+        }
+
+        .winners-grid {
+            display: none;
+            grid-template-columns: 1fr;
+            max-width: 600px;
+            margin: 0 auto;
+            gap: 2rem;
+            padding: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .winners-grid.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .winner-card {
+            transform-style: preserve-3d;
+            transition: transform 1s;
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            position: relative;
+            min-height: 300px;
+            width: 100%;
+            margin: 0 auto;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+
+        .winner-card.revealed {
+            transform: rotateY(0deg);
+        }
+
+        .winner-card-front {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            padding: 2rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transform: rotateY(0deg);
+        }
+
+        .winner-info {
+            color: #1a1a1a;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+
+        .winner-crown {
+            font-size: 4rem;
+            position: absolute;
+            top: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: float-crown 2s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            z-index: 3;
+        }
+
+        .winner-name {
+            font-size: 2.5rem;
+            margin: 0.5rem 0;
+            font-family: 'Harry Potter', cursive;
+            color: #1a1a1a;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+            padding: 0.5rem;
+            border-radius: 10px;
+        }
+
+        .winner-position {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #1a1a1a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffd700;
+            font-weight: bold;
+            font-size: 1.4rem;
+            font-family: 'Harry Potter', cursive;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            border: 2px solid #ffd700;
+            z-index: 3;
+        }
+
+        .winner-category {
+            font-size: 1.6rem;
+            margin: 0.5rem 0;
+            color: #1a1a1a;
+            font-family: 'Harry Potter', cursive;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+        }
+
+        .winner-governorate {
+            font-size: 1.4rem;
+            color: #1a1a1a;
+            opacity: 0.9;
+            font-family: 'Harry Potter', cursive;
+            margin-top: 0.5rem;
+            font-weight: bold;
+        }
+
+        .back-button {
+            background: rgba(232, 215, 176, 0.2);
+            color: #e8d7b0;
+            border: 2px solid #e8d7b0;
+            padding: 15px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 1.2rem;
+            margin: 2rem;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .back-button:hover {
+            background: rgba(232, 215, 176, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .magical-stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .magical-star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: #e8d7b0;
+            border-radius: 50%;
+            animation: twinkle-star 3s infinite;
+        }
+
+        @keyframes twinkle-star {
+            0% { opacity: 0; }
+            50% { opacity: 1; transform: scale(1.5); }
+            100% { opacity: 0; }
+        }
+
+        .light-burst {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, white 0%, transparent 70%);
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-out;
+        }
+
+        .light-burst.active {
+            animation: light-explosion 1.5s ease-out forwards;
+        }
+
+        @keyframes light-explosion {
+            0% { opacity: 0; transform: scale(0.1); }
+            50% { opacity: 0.8; transform: scale(1.2); }
+            100% { opacity: 0; transform: scale(2); }
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 12, 28, 0.9);
+            color: #e8d7b0;
+            text-align: center;
+            padding: 1rem;
+            font-family: 'Cinzel Decorative', cursive;
+            border-top: 2px solid rgba(232, 215, 176, 0.3);
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .developer {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .special-thanks {
+            font-size: 1rem;
+            opacity: 0.9;
+            color: #e8d7b0;
+        }
+
+        .thanks-names {
+            color: #4a90e2;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
+        }
+
+        .copyright {
+            font-size: 0.9rem;
+            color: #e8d7b0;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body class="use-local-bg">
+    <!-- Add audio elements -->
+    <audio id="audioPlayer" loop autoplay>
+        <source src="audio/school-of-magic-inspired-by-harry-potter-289617.mp3" type="audio/mp3">
+    </audio>
+    <audio id="doorOpenSound">
+        <source src="audio/⚡10 Harry Potter Spells (Sound Effects) [bqixAkezavI] (2).mp3" type="audio/mp3">
+    </audio>
+    <audio id="magicBurstSound">
+        <source src="audio/school-of-magic-inspired-by-harry-potter-289617.mp3" type="audio/mp3">
+    </audio>
+    <audio id="whooshSound">
+        <source src="audio/the-mischievous-wizard-311524.mp3" type="audio/mp3">
+    </audio>
+    <audio id="cardFlipSound">
+        <source src="audio/⚡10 Harry Potter Spells (Sound Effects) [bqixAkezavI] (2).mp3" type="audio/mp3">
+    </audio>
+    <!-- Add house sounds -->
+    <audio id="gryffindorSound">
+        <source src="audio/house audio/gryffindor.mp3" type="audio/mp3">
+    </audio>
+    <audio id="hufflepuffSound">
+        <source src="audio/house audio/hufflepuff.mp3" type="audio/mp3">
+    </audio>
+    <audio id="ravenclawSound">
+        <source src="audio/house audio/ravenclaw.mp3" type="audio/mp3">
+    </audio>
+    <audio id="slytherinSound">
+        <source src="audio/house audio/slytherin.mp3" type="audio/mp3">
+    </audio>
+
+    <div class="winners-container">
+        <h1 class="winners-title">The Champions of YLY</h1>
+        <div class="magical-stars" id="magicalStars"></div>
+
+        <!-- Houses Grid -->
+        <div class="houses-container">
+            <!-- Gryffindor -->
+            <div class="house-card gryffindor" data-house="gryffindor">
+                <div class="house-door">
+                    <div class="door-front">
+                        <div class="door-handle"></div>
+                        <div class="house-name-plate">
+                            <div class="house-name">Gryffindor</div>
+                            <div class="house-description">Courage & Bravery</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="door-frame"></div>
+                <div class="doorway"></div>
+            </div>
+
+            <!-- Hufflepuff -->
+            <div class="house-card hufflepuff" data-house="hufflepuff">
+                <div class="house-door">
+                    <div class="door-front">
+                        <div class="door-handle"></div>
+                        <div class="house-name-plate">
+                            <div class="house-name">Hufflepuff</div>
+                            <div class="house-description">Loyalty & Dedication</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="door-frame"></div>
+                <div class="doorway"></div>
+            </div>
+
+            <!-- Ravenclaw -->
+            <div class="house-card ravenclaw" data-house="ravenclaw">
+                <div class="house-door">
+                    <div class="door-front">
+                        <div class="door-handle"></div>
+                        <div class="house-name-plate">
+                            <div class="house-name">Ravenclaw</div>
+                            <div class="house-description">Wisdom & Creativity</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="door-frame"></div>
+                <div class="doorway"></div>
+            </div>
+
+            <!-- Slytherin -->
+            <div class="house-card slytherin" data-house="slytherin">
+                <div class="house-door">
+                    <div class="door-front">
+                        <div class="door-handle"></div>
+                        <div class="house-name-plate">
+                            <div class="house-name">Slytherin</div>
+                            <div class="house-description">Ambition & Cunning</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="door-frame"></div>
+                <div class="doorway"></div>
+            </div>
+        </div>
+
+        <!-- Categories Grid (Initially Hidden) -->
+        <div class="categories-grid" id="categoriesGrid"></div>
+
+        <!-- Winners Grid (Initially Hidden) -->
+        <div class="winners-grid" id="winnersGrid"></div>
+
+        <!-- Back Button (Initially Hidden) -->
+        <button class="back-button" id="backButton">Back to Houses</button>
+    </div>
+
+    <div class="light-burst" id="lightBurst"></div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="developer">Developed by MARO</div>
+            <div class="special-thanks">
+                Special Thanks to 
+                <span class="thanks-names">
+                    Shahd Dandrawy, Rawda Mohamed, Verina Shokry, Sara Basousi
+                </span>
+            </div>
+            <div class="copyright">© 2023 YLY Competition. جميع الحقوق محفوظة.</div>
+            <div class="special-thanks">تم التصميم بواسطة فريق YLY السحري</div>
+        </div>
+    </footer>
+
+    <script>
+        // House categories mapping
+        const houseCategories = {
+            gryffindor: ['TikTok', 'Film'],
+            hufflepuff: ['Content Creator', 'Singing'],
+            ravenclaw: ['Dubbing', 'Design'],
+            slytherin: ['Ads', 'Reel']
+        };
+
+        // Category icons mapping
+        const categoryIcons = {
+            'TikTok': '📱',
+            'Film': '🎬',
+            'Content Creator': '📹',
+            'Singing': '🎤',
+            'Dubbing': '🎭',
+            'Design': '🎨',
+            'Ads': '📢',
+            'Reel': '🎞️'
+        };
+
+        // Create magical stars
+        function createStars() {
+            const starsContainer = document.getElementById('magicalStars');
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'magical-star';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 3}s`;
+                starsContainer.appendChild(star);
+            }
+        }
+        createStars();
+
+        // DOM Elements
+        const housesContainer = document.querySelector('.houses-container');
+        const categoriesGrid = document.querySelector('.categories-grid');
+        const winnersGrid = document.querySelector('.winners-grid');
+        const backButton = document.getElementById('backButton');
+        const lightBurst = document.getElementById('lightBurst');
+
+        // Sound control functions
+        function playSound(audioElement, volume = 0.5, duration = null) {
+            audioElement.volume = volume;
+            audioElement.currentTime = 0;
+            audioElement.play().catch(err => console.log('Audio play failed:', err));
+            
+            if (duration) {
+                setTimeout(() => {
+                    audioElement.pause();
+                    audioElement.currentTime = 0;
+                }, duration);
+            }
+        }
+
+        // Initialize audio elements
+        const audioPlayer = document.getElementById('audioPlayer');
+        const doorOpenSound = document.getElementById('doorOpenSound');
+        const magicBurstSound = document.getElementById('magicBurstSound');
+        const whooshSound = document.getElementById('whooshSound');
+        const cardFlipSound = document.getElementById('cardFlipSound');
+
+        // Initialize house audio elements
+        const houseSounds = {
+            gryffindor: document.getElementById('gryffindorSound'),
+            hufflepuff: document.getElementById('hufflepuffSound'),
+            ravenclaw: document.getElementById('ravenclawSound'),
+            slytherin: document.getElementById('slytherinSound')
+        };
+
+        // Variable to store current playing house sound
+        let currentHouseSound = null;
+
+        // Set initial volume
+        audioPlayer.volume = 0.2;
+
+        // Play background music on first interaction
+        document.addEventListener('click', function initAudio() {
+            audioPlayer.play().catch(err => console.log('Audio play failed:', err));
+            document.removeEventListener('click', initAudio);
+        }, { once: true });
+
+        // Add hover sound effects to house cards
+        document.querySelectorAll('.house-card').forEach(card => {
+            // Add mouseenter event for house sounds
+            card.addEventListener('mouseenter', function() {
+                const house = this.getAttribute('data-house');
+                // Stop any currently playing house sound
+                if (currentHouseSound) {
+                    currentHouseSound.pause();
+                    currentHouseSound.currentTime = 0;
+                }
+                // Play new house sound
+                if (houseSounds[house]) {
+                    currentHouseSound = houseSounds[house];
+                    currentHouseSound.volume = 0.4;
+                    currentHouseSound.play().catch(err => console.log('House audio play failed:', err));
+                }
+            });
+
+            // Add mouseleave event to stop sound
+            card.addEventListener('mouseleave', function() {
+                if (currentHouseSound) {
+                    currentHouseSound.pause();
+                    currentHouseSound.currentTime = 0;
+                }
+            });
+
+            // Existing click event
+            card.addEventListener('click', () => {
+                const house = card.getAttribute('data-house');
+                card.classList.add('door-open');
+                
+                // Stop house sound if playing
+                if (currentHouseSound) {
+                    currentHouseSound.pause();
+                    currentHouseSound.currentTime = 0;
+                }
+                
+                // Play door open sound
+                playSound(doorOpenSound, 0.7, 5000);
+                
+                setTimeout(() => {
+                    lightBurst.classList.add('active');
+                    playSound(magicBurstSound, 0.4);
+                    
+                    setTimeout(() => {
+                        housesContainer.style.display = 'none';
+                        showCategories(house);
+                        backButton.style.display = 'inline-block';
+                        
+                        playSound(whooshSound, 0.08, 4000);
+                        
+                        setTimeout(() => {
+                            lightBurst.classList.remove('active');
+                            categoriesGrid.classList.add('active');
+                        }, 500);
+                    }, 1000);
+                }, 1000);
+            });
+        });
+
+        backButton.addEventListener('click', () => {
+            playSound(whooshSound, 0.08, 4000);
+            lightBurst.classList.add('active');
+            
+            setTimeout(() => {
+                if (winnersGrid.style.display === 'grid') {
+                    winnersGrid.style.display = 'none';
+                    winnersGrid.classList.remove('active');
+                    categoriesGrid.style.display = 'grid';
+                    setTimeout(() => {
+                        categoriesGrid.classList.add('active');
+                    }, 100);
+                } else {
+                    categoriesGrid.style.display = 'none';
+                    categoriesGrid.classList.remove('active');
+                    housesContainer.style.display = 'flex';
+                    backButton.style.display = 'none';
+                    document.querySelectorAll('.house-card').forEach(card => {
+                        card.classList.remove('door-open');
+                    });
+                }
+                
+                setTimeout(() => {
+                    lightBurst.classList.remove('active');
+                }, 500);
+            }, 500);
+        });
+
+        function showCategories(house) {
+            categoriesGrid.innerHTML = '';
+            const categories = houseCategories[house];
+            
+            categories.forEach(category => {
+                const card = document.createElement('div');
+                card.className = `category-card ${house}`;
+                card.innerHTML = `
+                    <div class="category-icon">${categoryIcons[category]}</div>
+                    <div class="category-name">${category}</div>
+                `;
+                card.addEventListener('click', () => {
+                    playSound(whooshSound, 0.08, 4000);
+                    lightBurst.classList.add('active');
+                    setTimeout(() => {
+                        showWinners(category);
+                        setTimeout(() => {
+                            lightBurst.classList.remove('active');
+                            winnersGrid.classList.add('active');
+                        }, 500);
+                    }, 500);
+                });
+                categoriesGrid.appendChild(card);
+            });
+
+            categoriesGrid.style.display = 'grid';
+        }
+
+        function showWinners(category) {
+            winnersGrid.innerHTML = '';
+            
+            const winnersData = {
+                'Design': { name: 'الفائز الأول', governorate: 'محافظة الجيزة' },
+                'Singing': { name: 'الفائز الأول', governorate: 'محافظة الأقصر' },
+                'Reel': { name: 'الفائز الأول', governorate: 'محافظتي بورسعيد والإسكندرية' },
+                'Dubbing': { name: 'الفائز الأول', governorate: 'محافظة بني سويف' },
+                'Content Creator': { name: 'الفائز الأول', governorate: 'تيم الوزارة' },
+                'TikTok': { name: 'الفائز الأول', governorate: 'تيم 5G' },
+                'Ads': { name: 'الفائز الأول', governorate: 'محافظة الغربية' },
+                'Film': { name: 'الفائز الأول', governorate: 'محافظة الإسماعيلية' }
+            };
+
+            const winner = winnersData[category];
+            if (winner) {
+                const card = document.createElement('div');
+                card.className = 'winner-card';
+                
+                const frontContent = `
+                    <div class="winner-crown">👑</div>
+                    <div class="winner-position">الأول</div>
+                    <div class="winner-info">
+                        <div class="winner-name">${winner.name}</div>
+                        <div class="winner-category">${category}</div>
+                        <div class="winner-governorate">${winner.governorate}</div>
+                    </div>
+                `;
+                
+                card.innerHTML = `
+                    <div class="winner-card-front">${frontContent}</div>
+                `;
+                
+                winnersGrid.appendChild(card);
+
+                // Add revealed class after a short delay
+                setTimeout(() => {
+                    playSound(cardFlipSound, 0.3, 1000);
+                    card.classList.add('revealed');
+                }, 100);
+            }
+
+            categoriesGrid.style.display = 'none';
+            categoriesGrid.classList.remove('active');
+            winnersGrid.style.display = 'grid';
+            winnersGrid.classList.add('active');
+        }
+    </script>
+</body>
+</html> 

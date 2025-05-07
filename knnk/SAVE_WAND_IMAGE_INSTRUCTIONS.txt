@@ -1,0 +1,10 @@
+WAND IMAGE INSTRUCTIONS:
+
+1. Please save the wand image from your query to the file: "images/new-wand.png"
+2. The image shows a wooden wand with a glowing yellow star at the tip.
+3. For the website to work properly, make sure the image:
+   - Has a transparent background (PNG format)
+   - Is saved at a reasonable resolution (around 300-400px high is ideal)
+   - Maintains the original proportions
+
+This image will be used for the magical selection animation in the lottery system. If you have any issues saving the image, please let me know. 
